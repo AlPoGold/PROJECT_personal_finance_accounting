@@ -19,8 +19,20 @@
         <td th:text="${expense.amount}"></td>
         <td th:text="${expense.category}"></td>
         <td th:text="${expense.date}"></td>
+        <td><a class="btn btn-success" th:href="@{expences/update/{id}(id=${expense.id})}"
+               title="Изменить">Edit</a>&nbsp;
+            <a class="btn btn-danger" th:href="@{expences/delete/{id}(id=${expense.id})}"
+               title="Удалить">Delete</a></td>
     </tr>
     </tbody>
 </table>
+
+<h2>Add expense</h2>
+<form action="/expenses" method="post">
+    Amount: <input type="text" name="amount"><br />
+    Category: <input type="text" name="category"><br />
+    Date: <input type="date" step="any" name="date" pattern="yyyy-MM-dd"><br />
+    <button type="submit">ADD</button>
+</form>
 </body>
 </html>

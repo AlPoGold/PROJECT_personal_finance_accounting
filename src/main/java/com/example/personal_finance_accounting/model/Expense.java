@@ -1,16 +1,16 @@
 package com.example.personal_finance_accounting.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @Entity
+@Table(name="expenses")
 public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +18,5 @@ public class Expense {
 
     private BigDecimal amount;
     private String category;
-    private LocalDate date;
+    private Date date;
 }

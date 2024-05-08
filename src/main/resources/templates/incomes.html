@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Incomes</title>
@@ -22,5 +22,13 @@
   </tr>
   </tbody>
 </table>
+
+<h2>Add income</h2>
+<form action="/incomes" method="post">
+  Amount: <input type="text" name="amount"><br />
+  Source: <input type="text" name="source"><br />
+  Date: <input type="date" step="any" name="date" pattern="yyyy-MM-dd"><br />
+  <button type="submit">ADD</button>
+</form>
 </body>
 </html>
