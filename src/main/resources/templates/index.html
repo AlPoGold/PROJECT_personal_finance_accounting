@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Balance</title>
 </head>
 <body>
-
-
+<h1>Balance</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Total Income</th>
+        <th>Total Expense</th>
+        <th>Total Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${balance.totalIncome}"></td>
+        <td th:text="${balance.totalExpense}"></td>
+        <td th:text="${balance.totalBalance}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

@@ -19,6 +19,10 @@
     <td th:text="${income.amount}"></td>
     <td th:text="${income.source}"></td>
     <td th:text="${income.date}"></td>
+    <td><a class="btn btn-success" th:href="@{incomes/update/{id}(id=${income.id})}"
+           title="Изменить">Edit</a>&nbsp;
+      <a class="btn btn-danger" th:href="@{incomes/delete/{id}(id=${income.id})}"
+         title="Удалить">Delete</a></td>
   </tr>
   </tbody>
 </table>

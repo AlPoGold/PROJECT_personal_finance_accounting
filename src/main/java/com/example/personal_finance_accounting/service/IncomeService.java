@@ -32,4 +32,13 @@ public class IncomeService {
         newIncome.setDate(date);
         return incomeRepository.save(newIncome);
     }
+
+    public void deleteById(Long id) {
+        incomeRepository.deleteById(id);
+    }
+
+    public Income findByid(Long id) {
+
+        return incomeRepository.findById(id).orElse(null);
+    }
 }
