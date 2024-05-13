@@ -31,8 +31,8 @@ public class BalanceService {
         return balance;
     }
 
-    public void saveBalanceForUser(String login) {
-        User user = userRepository.findByUserLogin(login);
+    public void saveBalanceForUser(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
         if (user != null) {
             Balance balance = calculateBalance();
             user.setCurrentBalance(balance);

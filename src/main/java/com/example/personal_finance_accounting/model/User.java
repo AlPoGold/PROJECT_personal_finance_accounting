@@ -17,13 +17,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
+    private String email;
     private String password;
     private String firstName;
     private String lastName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
-    private String email;
+
     private ARole role = ARole.USER_ROLE;
 
     @OneToOne(cascade = CascadeType.ALL)

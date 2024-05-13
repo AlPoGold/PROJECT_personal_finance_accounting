@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDetailsImp implements UserDetails {
     private Long id;
-    private String login;
     private String password;
     private String firstName;
     private String lastName;
@@ -29,7 +28,6 @@ public class UserDetailsImp implements UserDetails {
         List<GrantedAuthority> authorityList = List.of(new SimpleGrantedAuthority(user.getRole().name()));
         return new UserDetailsImp(
                 user.getId(),
-                user.getLogin(),
                 user.getPassword(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -50,7 +48,7 @@ public class UserDetailsImp implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override

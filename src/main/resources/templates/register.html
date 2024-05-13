@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Registration form</title>
@@ -7,7 +7,6 @@
 <body>
 <form th:action="@{/registration}" method="post" th:object="${user}">
     <input th:field="*{email}" type="text" name="email" id="email">
-    <input th:field="*{login}" type="text" name="login" id="login">
     <input th:field="*{password}" type="password" name="password" id="password">
     <input th:field="*{firstName}" type="text" name="firstName" id="firstName">
     <input th:field="*{lastName}" type="text" name="lastName" id="lastName">

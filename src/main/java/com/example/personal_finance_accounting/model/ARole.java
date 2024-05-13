@@ -4,4 +4,6 @@ public enum ARole {
 
     USER_ROLE,
     ADMIN_ROLE
+
+
 }
