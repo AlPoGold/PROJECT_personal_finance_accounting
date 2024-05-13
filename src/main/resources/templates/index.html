@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Balance</title>
+    <link th:href="@{static/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>Balance</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Total Income</th>
-        <th>Total Expense</th>
-        <th>Total Balance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${balance.totalIncome}"></td>
-        <td th:text="${balance.totalExpense}"></td>
-        <td th:text="${balance.totalBalance}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class ="container">
+    <h1>Balance</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Total Income</th>
+            <th>Total Expense</th>
+            <th>Total Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${balance.totalIncome}"></td>
+            <td th:text="${balance.totalExpense}"></td>
+            <td th:text="${balance.totalBalance}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

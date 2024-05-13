@@ -1,0 +1,12 @@
+.container {
+    background: linear-gradient(to right, #00ff00, #008000);
+}
+
+.container img {
+    border: 1px solid #000000;
+}
+
+.container h1 {
+    color: #006400;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
