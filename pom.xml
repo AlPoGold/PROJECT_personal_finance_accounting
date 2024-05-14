@@ -76,6 +76,7 @@
 			<artifactId>webjars-locator-core</artifactId>
 			<version>0.58</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
