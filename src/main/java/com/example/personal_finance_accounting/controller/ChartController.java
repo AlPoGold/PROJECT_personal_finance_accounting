@@ -22,7 +22,7 @@ public class ChartController {
     private final ChartService chartService;
 
 
-    @GetMapping("/chart")
+    @GetMapping("/charts")
     public String showIncomeChart(Model model){
         // Создаем график с данными
         JFreeChart chartIncome = chartService.createIncomeChart();
@@ -49,7 +49,7 @@ public class ChartController {
         model.addAttribute("expenceChart", chartExpence);
         model.addAttribute("balanceChart", chartBalance);
 
-        return "chart";
+        return "charts";
     }
 
 }
