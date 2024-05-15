@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 @Controller
@@ -51,12 +53,20 @@ public class ExpenseController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateExpense(@PathVariable("id") Long id, Model model){
-        Expense expense = expenseService.findByid(id);
-        if(expense!=null){
-            model.addAttribute("expense", expense);
+    public String updateIncome(@PathVariable("id") Long id, Model model){
+        expenseService.findById(id).ifPresent(expense -> model.addAttribute("expense", expense));
+        return "redirect:/expense/update/{id}";
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateExpense(@PathVariable("id") Long id, @RequestBody Expense updatedExpense) {
+        Optional<Expense> existingExpenseOptional = expenseService.findById(id);
+        if (existingExpenseOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return "redirect:/expenses";
+        expenseService.updateById(id, updatedExpense);
+        return ResponseEntity.ok("Expense updated successfully");
     }
 
 

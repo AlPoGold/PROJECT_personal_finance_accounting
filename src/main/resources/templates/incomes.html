@@ -2,39 +2,170 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" th:href="@{static/css/bootstrap.min.css}"/>
-  <link th:href="@{static/css/style.css}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}"/>
+  <link th:href="@{/static/css/style.css}" rel="stylesheet" />
   <title>Incomes</title>
 </head>
 <body>
-<h1>Incomes</h1>
-<table>
-  <thead>
-  <tr>
-    <th>Amount</th>
-    <th>Source</th>
-    <th>Date</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="income : ${incomes}">
-    <td th:text="${income.amount}"></td>
-    <td th:text="${income.source}"></td>
-    <td th:text="${income.date}"></td>
-    <td><a class="btn btn-success" th:href="@{incomes/update/{id}(id=${income.id})}"
-           title="Изменить">Edit</a>&nbsp;
-      <a class="btn btn-danger" th:href="@{incomes/delete/{id}(id=${income.id})}"
-         title="Удалить">Delete</a></td>
-  </tr>
-  </tbody>
-</table>
+<div class="container">
+  <div class="navigator">
+    <ul class="nav justify-content-center nav-pills nav-fill">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" th:href="@{/}">Balance</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/charts}">Statistic</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/goals}">Goals</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/advices}">Advices</a>
+      </li>
+    </ul>
+  </div>
+  <div class="main">
+    <h1>Incomes</h1>
+    <table class="table table-bordered table-hover">
+      <thead>
+      <tr>
+        <th>Amount</th>
+        <th>Source</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="income : ${incomes}">
+        <td class="table-success" th:text="${income.amount}"></td>
+        <td th:text="${income.source}"></td>
+        <td th:text="${#dates.format(income.date, 'dd-MM-yyyy')}"></td>
+        <td>
+          <a class="btn btn-success"
+             th:data-id="${income.id}"
+             th:data-amount="${income.amount}"
+             th:data-source="${income.source}"
+             th:data-date="${income.date}"
+             onclick="openEditModal(this)"
+             title="Edit">Edit</a>&nbsp;
+          <a class="btn btn-danger" th:href="@{/incomes/delete/{id}(id=${income.id})}"
+             title="Delete">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
-<h2>Add income</h2>
-<form action="/incomes" method="post">
-  Amount: <input type="text" name="amount"><br />
-  Source: <input type="text" name="source"><br />
-  Date: <input type="date" step="any" name="date" pattern="yyyy-MM-dd"><br />
-  <button type="submit">ADD</button>
-</form>
+  <div class="add_form">
+    <h2>Add income</h2>
+    <form action="/incomes" method="post">
+      <table class="table table-border">
+        <tr>
+          <td>Amount:</td>
+          <td><input type="text" name="amount"></td>
+        </tr>
+        <tr>
+          <td>Source:</td>
+          <td><input type="text" name="source"></td>
+        </tr>
+        <tr>
+          <td>Date:</td>
+          <td><input type="date" step="any" name="date" pattern="yyyy-MM-dd"></td>
+        </tr>
+        <tr>
+          <td colspan="2"><button class="btn btn-primary" type="submit">ADD</button></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<dialog id="editIncome">
+  <form id="editForm"  method="post">
+    <input type="hidden" id="editId" name="id">
+    <label for="amount">Amount:</label><br>
+    <input type="text" id="editAmount" name="amount"><br>
+    <label for="source">Source:</label><br>
+    <input type="text" id="editSource" name="source"><br>
+    <label for="date">Date:</label><br>
+    <input type="date" id="editDate" name="date"><br><br>
+    <button type="submit">Save</button>
+  </form>
+  <button id="closeDialogBtn" type="button" onclick="closeEditModal()">
+    Close
+  </button>
+
+
+</dialog>
+
 </body>
+<script th:inline="javascript">
+function openEditModal(element) {
+    var id = element.getAttribute('data-id');
+    var amount = element.getAttribute('data-amount');
+    var source = element.getAttribute('data-source');
+    var date = element.getAttribute('data-date');
+
+    document.getElementById('editId').value = id;
+    document.getElementById('editAmount').value = amount;
+    document.getElementById('editSource').value = source;
+    document.getElementById('editDate').value = date;
+
+    document.getElementById('editIncome').showModal();
+
+}
+
+function closeEditModal() {
+    document.getElementById('editIncome').close();
+}
+
+// Listen for form submission
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    // Отменяем стандартное поведение формы
+    event.preventDefault();
+
+    // Получаем данные из формы
+    var formData = new FormData(this);
+    var incomeId = document.getElementById('editId').value;
+
+
+    console.log(incomeId);
+
+    // Получаем данные о доходе из модального окна
+    var updatedIncome = {
+            amount: formData.get('amount'),
+            source: formData.get('source'),
+            date: formData.get('date')
+    };
+
+    // Отправляем данные на сервер
+    fetch('/incomes/update/' + incomeId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedIncome)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Если ответ успешный, перенаправляем пользователя на страницу доходов
+            window.location.href = '/incomes';
+        } else {
+            // В случае ошибки выводим сообщение об ошибке в консоль
+            console.error('Error:', response.statusText);
+        }
+    })
+    .catch(error => {
+        // Если произошла ошибка при выполнении запроса, выводим ее в консоль
+        console.error('Error:', error);
+    });
+});
+
+</script>
+
 </html>

@@ -2,6 +2,7 @@ package com.example.personal_finance_accounting.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,5 +21,6 @@ public class Income {
     @Column(name="source")
     private String source;
     @Column(name="date")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
 }

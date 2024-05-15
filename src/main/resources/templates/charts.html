@@ -8,6 +8,28 @@
 </head>
 <body>
 <h1>График</h1>
+<div class="navigator">
+  <ul class="nav justify-content-center nav-pills nav-fill">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/charts}">Statistic</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/goals}">Goals</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/advices}">Advices</a>
+    </li>
+  </ul>
+</div>
 <div style="display: flex;">
   <img th:src="@{/static/img/income_chart.png}" alt="Chart Image" src="">
   <img th:src="@{/static/img/expence_chart.png}" alt="Chart Image" src="">

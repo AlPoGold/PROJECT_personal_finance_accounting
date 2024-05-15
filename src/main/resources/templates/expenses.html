@@ -1,40 +1,165 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}"/>
+    <link th:href="@{/static/css/style.css}" rel="stylesheet" />
     <title>Expenses</title>
-    <link rel="stylesheet" type="text/css" th:href="@{static/css/bootstrap.min.css}"/>
-    <link th:href="@{static/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>Expenses</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Amount</th>
-        <th>Category</th>
-        <th>Date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="expense : ${expenses}">
-        <td th:text="${expense.amount}"></td>
-        <td th:text="${expense.category}"></td>
-        <td th:text="${expense.date}"></td>
-        <td><a class="btn btn-success" th:href="@{expences/update/{id}(id=${expense.id})}"
-               title="Изменить">Edit</a>&nbsp;
-            <a class="btn btn-danger" th:href="@{expences/delete/{id}(id=${expense.id})}"
-               title="Удалить">Delete</a></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <div class="navigator">
+        <ul class="nav justify-content-center nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" th:href="@{/}">Balance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/charts}">Statistic</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/goals}">Goals</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/advices}">Advices</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <h1>Expenses</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="expense : ${expenses}">
+                <td class="table-danger" th:text="${expense.amount}"></td>
+                <td th:text="${expense.category}"></td>
+                <td th:text="${#dates.format(expense.date, 'dd-MM-yyyy')}"></td>
+                <td>
+                    <a class="btn btn-success"
+                       th:data-id="${expense.id}"
+                       th:data-amount="${expense.amount}"
+                       th:data-category="${expense.category}"
+                       th:data-date="${expense.date}"
+                       onclick="openEditModal(this)"
+                       title="Edit">Edit</a>&nbsp;
+                    <a class="btn btn-danger" th:href="@{/expenses/delete/{id}(id=${expense.id})}"
+                       title="Delete">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-<h2>Add expense</h2>
-<form action="/expenses" method="post">
-    Amount: <input type="text" name="amount"><br />
-    Category: <input type="text" name="category"><br />
-    Date: <input type="date" step="any" name="date" pattern="yyyy-MM-dd"><br />
-    <button type="submit">ADD</button>
-</form>
+    <div class="add_form">
+        <h2>Add expense</h2>
+        <form action="/expenses" method="post">
+            <table class="table table-border">
+                <tr>
+                    <td>Amount:</td>
+                    <td><input type="text" name="amount"></td>
+                </tr>
+                <tr>
+                    <td>Category:</td>
+                    <td><input type="text" name="category"></td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td><input type="date" step="any" name="date" pattern="yyyy-MM-dd"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="btn btn-primary" type="submit">ADD</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<dialog id="editExpense">
+        <form id="editForm"  method="post">
+            <input type="hidden" id="editId" name="id">
+            <label for="amount">Amount:</label><br>
+            <input type="text" id="editAmount" name="amount"><br>
+            <label for="category">Category:</label><br>
+            <input type="text" id="editCategory" name="category"><br>
+            <label for="date">Date:</label><br>
+            <input type="date" id="editDate" name="date"><br><br>
+
+        </form>
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" id="closeDialogBtn" type="button" onclick="closeEditModal()">
+            Close
+        </button>
+</dialog>
+
 </body>
+<script th:inline="javascript">
+function openEditModal(element) {
+    var id = element.getAttribute('data-id');
+    var amount = element.getAttribute('data-amount');
+    var category = element.getAttribute('data-category');
+    var date = element.getAttribute('data-date');
+
+    document.getElementById('editId').value = id;
+    document.getElementById('editAmount').value = amount;
+    document.getElementById('editCategory').value = category;
+    document.getElementById('editDate').value = date;
+
+    document.getElementById('editExpense').showModal();
+
+}
+
+function closeEditModal() {
+    document.getElementById('editExpense').close();
+}
+
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Получаем данные из формы
+    var formData = new FormData(this);
+    var expenseId = document.getElementById('editId').value;
+
+
+    console.log(expenseId);
+
+    // Получаем данные о доходе из модального окна
+    var updatedExpense = {
+            amount: formData.get('amount'),
+            category: formData.get('category'),
+            date: formData.get('date')
+    };
+
+    // Отправляем данные на сервер
+    fetch('/expenses/update/' + expenseId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedExpense)
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/expenses';
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+</script>
+
 </html>

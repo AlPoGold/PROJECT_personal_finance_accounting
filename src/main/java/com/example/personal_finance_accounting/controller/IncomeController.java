@@ -7,12 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 
 @Controller
@@ -47,17 +50,30 @@ public class IncomeController {
 
     @GetMapping("/delete/{id}")
     public String deleteIncome(@PathVariable("id") Long id) {
+        FileLogger.log("income was deleted!" + "|" + "+" + Objects.requireNonNull(incomeService.findById(id).orElse(null)).getAmount());
         incomeService.deleteById(id);
+
         return "redirect:/incomes";
     }
 
     @GetMapping("/update/{id}")
-    public String updateExpense(@PathVariable("id") Long id, Model model){
-        Income income = incomeService.findByid(id);
-        if(income!=null){
-            model.addAttribute("income", income);
+    public String updateIncome(@PathVariable("id") Long id, Model model){
+        incomeService.findById(id).ifPresent(income -> model.addAttribute("income", income));
+        return "redirect:/incomes/update/{id}";
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateIncome(@PathVariable("id") Long id, @RequestBody Income updatedIncome) {
+        // Проверяем, существует ли запись с указанным id
+        Optional<Income> existingIncomeOptional = incomeService.findById(id);
+        if (existingIncomeOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return "redirect:/incomes";
+        incomeService.updateById(id, updatedIncome);
+
+        // Возвращаем статус OK и сообщение об успешном обновлении
+        return ResponseEntity.ok("Income updated successfully");
     }
 
 

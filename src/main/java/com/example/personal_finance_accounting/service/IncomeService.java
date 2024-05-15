@@ -2,6 +2,8 @@ package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Income;
 import com.example.personal_finance_accounting.repository.IncomeRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 @AllArgsConstructor
@@ -37,8 +40,21 @@ public class IncomeService {
         incomeRepository.deleteById(id);
     }
 
-    public Income findByid(Long id) {
+    public Optional<Income> findById(Long id) {
+        return incomeRepository.findById(id);
+    }
 
-        return incomeRepository.findById(id).orElse(null);
+    @Transactional
+    public void updateById(Long id, Income updatedIncome) {
+        Optional<Income> incomeOptional = incomeRepository.findById(id);
+        if (incomeOptional.isPresent()) {
+            Income income = incomeOptional.get();
+            income.setAmount(updatedIncome.getAmount());
+            income.setSource(updatedIncome.getSource());
+            income.setDate(updatedIncome.getDate());
+            incomeRepository.save(income);
+        } else {
+            throw new EntityNotFoundException("Income with id " + id + " not found");
+        }
     }
 }

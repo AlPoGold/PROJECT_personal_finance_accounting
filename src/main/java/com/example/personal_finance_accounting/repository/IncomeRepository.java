@@ -17,4 +17,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
 
     @Query("SELECT COALESCE(SUM(i.amount), 0) FROM Income i WHERE i.date BETWEEN :startDate AND :endDate")
     BigDecimal calculateTotalIncomeByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    @Query("UPDATE Income i SET i.amount = :amount, i.source = :source, i.date = :date WHERE i.id = :id")
+    void updateById(Long id, BigDecimal amount, String source, Date date);
 }

@@ -2,12 +2,15 @@ package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Expense;
 import com.example.personal_finance_accounting.repository.ExpenseRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -32,7 +35,21 @@ public class ExpenseService {
         expenseRepository.deleteById(id);
     }
 
-    public Expense findByid(Long id) {
-        return expenseRepository.findById(id).orElse(null);
+    public Optional<Expense> findById(Long id) {
+        return expenseRepository.findById(id);
+    }
+
+    @Transactional
+    public void updateById(Long id, Expense updatedExpense) {
+        Optional<Expense> expenseOptional = expenseRepository.findById(id);
+        if (expenseOptional.isPresent()) {
+            Expense expense = expenseOptional.get();
+            expense.setAmount(updatedExpense.getAmount());
+            expense.setCategory(updatedExpense.getCategory());
+            expense.setDate(updatedExpense.getDate());
+            expenseRepository.save(expense);
+        } else {
+            throw new EntityNotFoundException("Expense with id " + id + " not found");
+        }
     }
 }
