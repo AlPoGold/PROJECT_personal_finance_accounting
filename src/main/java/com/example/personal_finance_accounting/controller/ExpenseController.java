@@ -2,6 +2,7 @@ package com.example.personal_finance_accounting.controller;
 
 import com.example.personal_finance_accounting.model.Expense;
 import com.example.personal_finance_accounting.service.ExpenseService;
+import com.example.personal_finance_accounting.service.FileLogger;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class ExpenseController {
                             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
         expenseService.addExpense(amount, category, date);
         log.log(Level.INFO, "expense was added!");
+        FileLogger.log("expense was added!" + "|" + "-" +amount);
 
 
         return "redirect:/expenses";

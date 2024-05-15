@@ -1,7 +1,7 @@
 package com.example.personal_finance_accounting.controller;
 
-import com.example.personal_finance_accounting.model.Expense;
 import com.example.personal_finance_accounting.model.Income;
+import com.example.personal_finance_accounting.service.FileLogger;
 import com.example.personal_finance_accounting.service.IncomeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -38,6 +38,8 @@ public class IncomeController {
                             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
         incomeService.addIncome(amount, source, date);
         log.log(Level.INFO, "income was added!");
+        FileLogger.log("income was added!" + "|" + "+" +amount);
+
 
 
         return "redirect:/incomes";
