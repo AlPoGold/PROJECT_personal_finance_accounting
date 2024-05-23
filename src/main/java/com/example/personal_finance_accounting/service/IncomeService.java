@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -57,4 +58,30 @@ public class IncomeService {
             throw new EntityNotFoundException("Income with id " + id + " not found");
         }
     }
+
+    public List<Income> getAllIncomesForLast3Months() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -3);
+        Date threeMonthsAgo = calendar.getTime();
+        Date today = new Date();
+        return incomeRepository.findIncomesByDateRange(threeMonthsAgo, today);
+    }
+
+    public List<Income> getAllIncomesForLastYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -1);
+        Date oneYearAgo = calendar.getTime();
+        Date today = new Date();
+        return incomeRepository.findIncomesByDateRange(oneYearAgo, today);
+    }
+
+    public List<Income> getAllIncomesForLastMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        Date oneMonthAgo = calendar.getTime();
+        Date today = new Date();
+        return incomeRepository.findIncomesByDateRange(oneMonthAgo, today);
+    }
+
+
 }

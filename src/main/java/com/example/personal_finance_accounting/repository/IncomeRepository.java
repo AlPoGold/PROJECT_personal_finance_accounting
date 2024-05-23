@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface IncomeRepository extends JpaRepository<Income, Long> {
@@ -20,4 +21,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
 
     @Query("UPDATE Income i SET i.amount = :amount, i.source = :source, i.date = :date WHERE i.id = :id")
     void updateById(Long id, BigDecimal amount, String source, Date date);
+
+    @Query("SELECT i FROM Income i WHERE i.date BETWEEN :startDate AND :endDate")
+    List<Income> findIncomesByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

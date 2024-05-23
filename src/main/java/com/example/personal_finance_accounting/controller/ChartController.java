@@ -9,11 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 @Controller
 @Data
 @AllArgsConstructor
@@ -24,32 +19,55 @@ public class ChartController {
 
     @GetMapping("/charts")
     public String showIncomeChart(Model model){
-        // Создаем график с данными
+        // INCOMES
         JFreeChart chartIncome = chartService.createIncomeChart();
-        JFreeChart chartExpence = chartService.createExpenseChart();
-        JFreeChart chartBalance = chartService.createBalanceChart();
-        BufferedImage imageIncome = chartIncome.createBufferedImage(600, 600); // Ваш BufferedImage
-        BufferedImage imageExpence = chartExpence.createBufferedImage(600, 600); // Ваш BufferedImage
-        BufferedImage imageBalance = chartBalance.createBufferedImage(600, 600); // Ваш BufferedImage
-        File outputFileIncome = new File("src/main/resources/static/img/income_chart.png");
-        File outputFileExpence = new File("src/main/resources/static/img/expence_chart.png");
-        File outputFileBalance = new File("src/main/resources/static/img/balance_chart.png");
-        try {
-            ImageIO.write(imageIncome, "png", outputFileIncome);
-            ImageIO.write(imageExpence, "png", outputFileExpence);
-            ImageIO.write(imageBalance, "png", outputFileBalance);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        chartService.createImage(chartIncome,0);
+        JFreeChart chartIncomeMonth = chartService.createIncomeChartLastMonth();
+        chartService.createImage(chartIncomeMonth, 1);
+        JFreeChart chartIncome3Months = chartService.createIncomeChart3Months();
+        chartService.createImage(chartIncome3Months, 3);
+        JFreeChart chartIncomeLastYear = chartService.createIncomeChartLastYear();
+        chartService.createImage(chartIncomeLastYear, 12);
 
 
-        // Добавляем график в модель
         model.addAttribute("incomeChart", chartIncome);
-        model.addAttribute("expenceChart", chartExpence);
+        model.addAttribute("incomes3month", chartIncome3Months );
+        model.addAttribute("incomeslastmonth", chartIncomeMonth);
+        model.addAttribute("incomeslastyear", chartIncomeLastYear );
+
+
+        //EXPENSES
+
+        JFreeChart chartExpense = chartService.createExpenseChart(0);
+        JFreeChart chartExpenseLastMonth = chartService.createExpenseChart(1);
+        JFreeChart chartExpense3Months = chartService.createExpenseChart(3);
+        JFreeChart chartExpenseLastYear = chartService.createExpenseChart(12);
+
+        model.addAttribute("expenseChart", chartExpense);
+        model.addAttribute("expenses3month", chartExpense3Months );
+        model.addAttribute("expenselastmonth", chartExpenseLastMonth);
+        model.addAttribute("expenselastyear", chartExpenseLastYear );
+
+
+
+        //BALANCE
+        JFreeChart chartBalance = chartService.createBalanceChart(0);
+        JFreeChart chartBalanceForLastMonth = chartService.createBalanceChart(1);
+        JFreeChart chartBalanceForLast3Month = chartService.createBalanceChart(3);
+        JFreeChart chartBalanceForLastYear = chartService.createBalanceChart(12);
+
+
+
         model.addAttribute("balanceChart", chartBalance);
+        model.addAttribute("balanceChartForLastMonth", chartBalanceForLastMonth);
+        model.addAttribute("balanceChartForLast3Month", chartBalanceForLast3Month);
+        model.addAttribute("balanceChartForLastYear", chartBalanceForLastYear);
+
 
         return "charts";
     }
+
+
+
 
 }
