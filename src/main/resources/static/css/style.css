@@ -35,3 +35,41 @@
   width: 70%; /* Установить ширину карусели на 70% */
   margin: 0 auto; /* Центрировать карусель по горизонтали */
 }
+
+.message-response {
+  border: 2px solid black; /* Черная рамка толщиной 2 пикселя */
+  width: 70%; /* Ширина контейнера на 70% родительского контейнера */
+  margin: 0 auto; /* Центрирование контейнера по горизонтали */
+  padding: 10px; /* Поля внутри контейнера */
+  font-style: italic;
+}
+.loading-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.loading-dialog .spinner {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none;
+}
