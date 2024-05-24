@@ -8,27 +8,29 @@
 </head>
 <body>
 <div class="container">
-  <div class="navigator">
-    <ul class="nav justify-content-center nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" th:href="@{/}">Balance</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/incomes}">Incomes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/charts}">Statistic</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/goals}">Goals</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/advices}">Advices</a>
-      </li>
-    </ul>
+  <div class="header">
+    <div class="navigator">
+      <ul class="nav justify-content-center nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/charts}">Statistic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/goals}">Goals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/advices}">Advices</a>
+        </li>
+      </ul>
+    </div>
   </div>
   <div class="main">
     <h1>Incomes</h1>
@@ -83,6 +85,25 @@
         </tr>
       </table>
     </form>
+  </div>
+  <div class = "add_form">
+    <h2>Reservation money for your goals</h2>
+    <form id="goalsForm" method="post">
+      <table class="table table-border">
+        <tr>
+          <td>Id:</td>
+          <td><input type="number" name="id"></td>
+        </tr>
+        <tr>
+          <td>Amount:</td>
+          <td><input type="text" name="amount"></td>
+        </tr>
+        <tr>
+          <td colspan="2"><button class="btn btn-primary" type="submit">SEND</button></td>
+        </tr>
+      </table>
+    </form>
+
   </div>
 </div>
 <dialog id="editIncome">
@@ -155,6 +176,38 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
         if (response.ok) {
             // Если ответ успешный, перенаправляем пользователя на страницу доходов
             window.location.href = '/incomes';
+        } else {
+            // В случае ошибки выводим сообщение об ошибке в консоль
+            console.error('Error:', response.statusText);
+        }
+    })
+    .catch(error => {
+        // Если произошла ошибка при выполнении запроса, выводим ее в консоль
+        console.error('Error:', error);
+    });
+});
+
+
+document.getElementById('goalsForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+    // Получаем данные из формы
+    var formData = new FormData(this);
+    var id = formData.get('id');
+    var amount = formData.get('amount');
+
+    // Отправляем PUT запрос на сервер
+    fetch('/goals/' + id + '?amount=' + amount, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Если ответ успешный, перенаправляем пользователя на страницу целей
+            window.location.reload();
+            document.getElementById('goalsForm').reset();
         } else {
             // В случае ошибки выводим сообщение об ошибке в консоль
             console.error('Error:', response.statusText);

@@ -72,7 +72,6 @@ public class IncomeController {
         }
         incomeService.updateById(id, updatedIncome);
 
-        // Возвращаем статус OK и сообщение об успешном обновлении
         return ResponseEntity.ok("Income updated successfully");
     }
 

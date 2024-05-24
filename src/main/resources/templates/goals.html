@@ -8,68 +8,73 @@
   <link th:href="@{static/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-<div>
-  <div class="navigator">
-    <ul class="nav justify-content-center nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/incomes}">Incomes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/charts}">Statistic</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/goals}">Goals</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/advices}">Advices</a>
-      </li>
-    </ul>
+<div class="container">
+  <div class="header">
+    <div class="navigator">
+      <ul class="nav justify-content-center nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/charts}">Statistic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/goals}">Goals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/advices}">Advices</a>
+        </li>
+      </ul>
+    </div>
   </div>
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Goal</th>
-      <th scope="col">Target amount</th>
-      <th scope="col">Current amount</th>
-      <th scope="col">Start date</th>
-      <th scope="col">End date</th>
-      <th scope="col">Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr  th:each="goal: ${listGoals}">
-      <td th:text="${goal.goalId}">Goal ID</td>
-      <td th:text="${goal.name}">Description</td>
-      <td th:text="${goal.targetAmount}">Target amount</td>
-      <td th:text="${goal.currentAmount}">Current amount</td>
-      <td th:text="${goal.startDate}">Start date</td>
-      <td th:text="${goal.endDate}">End date</td>
-      <td th:text="${goal.status}">Status</td>
-    </tbody>
-  </table>
-<div class ="form">
-  <div class="mb-3">
-    <form action="/goals" method="post">
-      <label class="form-label">Description of goal</label>
-      <input type="text" name="name"class="form-control"  placeholder="gift for myself">
-      <label class="form-label">Target amount</label>
-      <input type="number" name="targetAmount" class="form-control"  placeholder="1000">
-      <label class="form-label">Start date</label>
-      <input type="date" name ="startDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_start" placeholder="Выберите дату">
-      <label class="form-label">End date</label>
-      <input type="date" name="endDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_end" placeholder="Выберите дату">
-      <button type="submit">ADD GOAL</button>
-    </form>
+  <div class="main">
+    <h1>Goals</h1>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Goal</th>
+        <th scope="col">Target amount</th>
+        <th scope="col">Current amount</th>
+        <th scope="col">Start date</th>
+        <th scope="col">End date</th>
+        <th scope="col">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  th:each="goal: ${listGoals}">
+        <td th:text="${goal.goalId}">Goal ID</td>
+        <td th:text="${goal.name}">Description</td>
+        <td th:text="${goal.targetAmount}">Target amount</td>
+        <td th:text="${goal.currentAmount}">Current amount</td>
+        <td th:text="${goal.startDate}">Start date</td>
+        <td th:text="${goal.endDate}">End date</td>
+        <td th:text="${goal.status}">Status</td>
+      </tbody>
+    </table>
+    <div class ="add_form">
+      <h2>Add your goal:</h2>
+      <div class="mb-3">
+        <form action="/goals" method="post">
+          <label class="form-label">Description of goal</label>
+          <input type="text" name="name"class="form-control"  placeholder="gift for myself">
+          <label class="form-label">Target amount</label>
+          <input type="text" name="targetAmount" class="form-control"  placeholder="1000">
+          <label class="form-label">Start date</label>
+          <input type="date" name ="startDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_start" placeholder="Выберите дату">
+          <label class="form-label">End date</label>
+          <input type="date" name="endDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_end" placeholder="Выберите дату">
+          <button type="submit">ADD GOAL</button>
+        </form>
+      </div>
+    </div>
   </div>
-</div>
-</div>
 </div>
 
 </body>

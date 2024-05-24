@@ -7,10 +7,31 @@
 .container h1 {
     color: #006400;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    display: block;
+    text-align: center;
+    padding: 10px;
 }
 
 .add_form {
     border: 5px solid black; /* рамка 5 пикселей */
     padding: 50px;/* отступы 50 пикселей */
     margin: 50px;
+}
+
+.carousel-inner img half_size_img{
+  height: 50vh;
+  object-fit: cover;
+  width: 100%;
+  margin: 0 auto; /* Центрирует изображение по горизонтали */
+  display: block; /* Устанавливает изображение в качестве блочного элемента */
+}
+
+.half_size {
+    height: 50vh;
+    width: 100%;
+}
+
+.carousel-custom-size {
+  width: 70%; /* Установить ширину карусели на 70% */
+  margin: 0 auto; /* Центрировать карусель по горизонтали */
 }

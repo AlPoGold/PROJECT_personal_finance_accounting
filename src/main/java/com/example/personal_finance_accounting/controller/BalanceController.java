@@ -19,7 +19,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping("/")
+@RequestMapping("/index")
 public class BalanceController {
 
     @Autowired
