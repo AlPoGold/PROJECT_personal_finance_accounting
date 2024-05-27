@@ -1,6 +1,7 @@
 package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Goal;
+import com.example.personal_finance_accounting.model.GoalStatusEnum;
 import com.example.personal_finance_accounting.repository.GoalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -33,12 +34,13 @@ public class GoalService {
         return goalRepository.findAll();
     }
 
-    public void addGoal(String name, Double targetAmount, LocalDate startDate, LocalDate endDate) {
+    public void addGoal(String name, Double targetAmount, LocalDate startDate, LocalDate endDate, GoalStatusEnum status) {
         Goal goal = new Goal();
         goal.setName(name);
         goal.setTargetAmount(targetAmount);
         goal.setStartDate(startDate);
         goal.setEndDate(endDate);
+        goal.setStatus(status);
 
         goalRepository.save(goal);
 
@@ -50,13 +52,47 @@ public class GoalService {
         Optional<Goal> goalOptional = goalRepository.findById(id);
         if (goalOptional.isPresent()) {
             Goal goal = goalOptional.get();
+            if(goal.getStatus().name().equals("NOT_STARTED")){
+                goal.setStatus(GoalStatusEnum.IN_PROGRESS);
+            }
             goal.setCurrentAmount(goal.getCurrentAmount()+amount);
+            if(goal.getCurrentAmount().equals(goal.getTargetAmount())){
+                goal.setStatus(GoalStatusEnum.COMPLETED);
+            }
             goalRepository.save(goal);
         } else {
             throw new EntityNotFoundException("Goal with id " + id + " not found");
         }
 
 
+
+    }
+
+    public void deleteGoal(Long id) {
+        goalRepository.deleteById(id);
+
+    }
+
+
+    public Optional<Goal> findById(Long id) {
+        return goalRepository.findById(id);
+    }
+
+    @Transactional
+    public void updateById(Long id, Goal updatedGoal) {
+        Optional<Goal> goalOptional = goalRepository.findById(id);
+        if (goalOptional.isPresent()) {
+            Goal existingGoal = goalOptional.get();
+            existingGoal.setName(updatedGoal.getName());
+            existingGoal.setTargetAmount(updatedGoal.getTargetAmount());
+            existingGoal.setCurrentAmount(updatedGoal.getCurrentAmount());
+            existingGoal.setStartDate(updatedGoal.getStartDate());
+            existingGoal.setEndDate(updatedGoal.getEndDate());
+            existingGoal.setStatus(updatedGoal.getStatus());
+            goalRepository.save(existingGoal);
+        } else {
+            throw new EntityNotFoundException("Goal with id " + id + " not found");
+        }
 
     }
 }

@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @Table(name="goals")
 public class Goal {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long goalId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 //    @ManyToOne
 //    @JoinColumn(name = "userId", nullable = true) //nullable sets to true so corresponding user account can be deleted despite FK constraint
@@ -41,5 +41,6 @@ public class Goal {
     private LocalDate endDate;
 
     @Column(name = "status")
-    private String status = "IN_PROCESS";
+    @Enumerated(EnumType.STRING)
+    private GoalStatusEnum status = GoalStatusEnum.NOT_STARTED;
 }

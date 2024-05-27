@@ -45,17 +45,31 @@
         <th scope="col">Start date</th>
         <th scope="col">End date</th>
         <th scope="col">Status</th>
+        <th scope="col">Action</th>
       </tr>
       </thead>
       <tbody>
       <tr  th:each="goal: ${listGoals}">
-        <td th:text="${goal.goalId}">Goal ID</td>
+        <td th:text="${goal.id}">Goal ID</td>
         <td th:text="${goal.name}">Description</td>
         <td th:text="${goal.targetAmount}">Target amount</td>
         <td th:text="${goal.currentAmount}">Current amount</td>
         <td th:text="${goal.startDate}">Start date</td>
         <td th:text="${goal.endDate}">End date</td>
         <td th:text="${goal.status}">Status</td>
+        <td>
+          <a class="btn btn-success"
+             th:data-id="${goal.id}"
+             th:data-target_amount="${goal.targetAmount}"
+             th:data-current_amount="${goal.currentAmount}"
+             th:data-start_date="${goal.startDate}"
+             th:data-end_date="${goal.endDate}"
+             th:data-status="${goal.status}"
+             onclick="openEditModal(this)"
+             title="Edit">Edit</a>&nbsp;
+          <a class="btn btn-danger" th:href="@{/goals/delete/{id}(id=${goal.id})}"
+             title="Delete">Delete</a>
+        </td>
       </tbody>
     </table>
     <div class ="add_form">
@@ -70,12 +84,101 @@
           <input type="date" name ="startDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_start" placeholder="Выберите дату">
           <label class="form-label">End date</label>
           <input type="date" name="endDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_end" placeholder="Выберите дату">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-control">
+            <option value="NOT_STARTED">NOT_STARTED</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="PAUSED">PAUSED</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
           <button type="submit">ADD GOAL</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-
+<dialog id="editGoal">
+  <form id="editForm" method="post">
+    <input type="hidden" id="editId" name="id">
+    <label for="editName">Description of goal:</label>
+    <input type="text" id="editName" name="name" class="form-control">
+    <label for="editTargetAmount">Target amount:</label>
+    <input type="text" id="editTargetAmount" name="targetAmount" class="form-control">
+    <label for="editCurrentAmount">Current amount:</label>
+    <input type="text" id="editCurrentAmount" name="currentAmount" class="form-control">
+    <label for="editStartDate">Start date:</label>
+    <input type="date" id="editStartDate" name="startDate" class="form-control">
+    <label for="editEndDate">End date:</label>
+    <input type="date" id="editEndDate" name="endDate" class="form-control">
+    <label for="editStatus">Status:</label>
+    <select id="editStatus" name="status" class="form-control">
+      <option value="NOT_STARTED">NOT_STARTED</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="PAUSED">PAUSED</option>
+      <option value="COMPLETED">COMPLETED</option>
+    </select><br>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </form>
+  <button class="btn btn-secondary" id="closeDialogBtn" type="button" onclick="closeEditModal()">Close</button>
+</dialog>
 </body>
+<script th:inline="javascript">
+function openEditModal(element) {
+    var id = element.getAttribute('data-id');
+    var name = element.getAttribute('data-name');
+    var targetAmount = element.getAttribute('data-target_amount');
+    var currentAmount = element.getAttribute('data-current_amount');
+    var startDate = element.getAttribute('data-start_date');
+    var endDate = element.getAttribute('data-end_date');
+    var status = element.getAttribute('data-status');
+
+    document.getElementById('editId').value = id;
+    document.getElementById('editName').value = name;
+    document.getElementById('editTargetAmount').value = targetAmount;
+    document.getElementById('editCurrentAmount').value = currentAmount;
+    document.getElementById('editStartDate').value = startDate;
+    document.getElementById('editEndDate').value = endDate;
+    document.getElementById('editStatus').value = status;
+
+    document.getElementById('editGoal').showModal();
+}
+
+function closeEditModal() {
+    document.getElementById('editGoal').close();
+}
+
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+    var goalId = document.getElementById('editId').value;
+
+    var updatedGoal = {
+        name: formData.get('name'),
+        targetAmount: formData.get('targetAmount'),
+        currentAmount: formData.get('currentAmount'),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate'),
+        status: formData.get('status')
+    };
+
+    fetch('/goals/update/' + goalId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedGoal)
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/goals';
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+</script>
 </html>

@@ -1,6 +1,8 @@
 package com.example.personal_finance_accounting.controller;
 
 import com.example.personal_finance_accounting.model.Goal;
+import com.example.personal_finance_accounting.model.GoalStatusEnum;
+import com.example.personal_finance_accounting.service.FileLogger;
 import com.example.personal_finance_accounting.service.GoalService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 @Controller
@@ -33,8 +36,10 @@ public class GoalController {
     public String addGoal(@RequestParam("name") String name,
                           @RequestParam("targetAmount") Double targetAmount,
                           @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-                          @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
-        goalService.addGoal(name, targetAmount, startDate, endDate);
+                          @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+                          @RequestParam("status")GoalStatusEnum status){
+        goalService.addGoal(name, targetAmount, startDate, endDate, status);
+        FileLogger.log("adding new goal!");
         log.log(Level.INFO, "goal was added!");
 
 
@@ -48,6 +53,22 @@ public class GoalController {
 
 
         return ResponseEntity.ok(goal);
+    }
+
+    @PutMapping("/goals/update/{id}")
+    public ResponseEntity<String> updateGoal(@PathVariable("id") Long id, @RequestBody Goal updatedGoal) {
+        Optional<Goal> existingGoalOptional = goalService.findById(id);
+        if (existingGoalOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        goalService.updateById(id, updatedGoal);
+        return ResponseEntity.ok("Goal updated successfully");
+    }
+
+    @DeleteMapping("goals/delete/{id}")
+    public ResponseEntity<Void> deleteGoal(@PathVariable Long id) {
+        goalService.deleteGoal(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

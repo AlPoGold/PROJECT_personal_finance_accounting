@@ -11,3 +11,5 @@ CREATE TABLE IF NOT EXISTS incomes (
     source VARCHAR(255) NOT NULL,
     date DATE NOT NULL
 );
+
+
