@@ -43,4 +43,8 @@ public class Goal {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private GoalStatusEnum status = GoalStatusEnum.NOT_STARTED;
+
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = true) //nullable sets to true so corresponding user account can be deleted despite FK constraint
+    private UserAccount userAccount;
 }

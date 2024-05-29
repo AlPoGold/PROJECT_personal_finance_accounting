@@ -1,12 +1,10 @@
 package com.example.personal_finance_accounting.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class UserAccount {

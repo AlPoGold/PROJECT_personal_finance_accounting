@@ -2,20 +2,28 @@ package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.UserAccount;
 import com.example.personal_finance_accounting.repository.UserAccountRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Data
+@AllArgsConstructor
 public class UserAccountService {
 
     UserAccountRepository userRepository;
-//    private BCryptPasswordEncoder encoder(){return new BCryptPasswordEncoder();}
+    private BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
     // Create a new user account
     public UserAccount createUserAccount(UserAccount userAccount) {
+        userAccount.setPassword(encoder().encode(userAccount.getPassword()));
         UserAccount user =  userRepository.save(userAccount);
         return user;
     }

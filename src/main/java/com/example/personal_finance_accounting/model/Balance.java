@@ -16,6 +16,9 @@ public class Balance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long balanceId;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private UserAccount userAccount;
 
     private BigDecimal totalIncome;
     private BigDecimal totalExpense;
