@@ -20,14 +20,10 @@ public class ChartController {
     @GetMapping("/charts")
     public String showIncomeChart(Model model){
         // INCOMES
-        JFreeChart chartIncome = chartService.createIncomeChart();
-        chartService.createImage(chartIncome,0);
-        JFreeChart chartIncomeMonth = chartService.createIncomeChartLastMonth();
-        chartService.createImage(chartIncomeMonth, 1);
-        JFreeChart chartIncome3Months = chartService.createIncomeChart3Months();
-        chartService.createImage(chartIncome3Months, 3);
-        JFreeChart chartIncomeLastYear = chartService.createIncomeChartLastYear();
-        chartService.createImage(chartIncomeLastYear, 12);
+        JFreeChart chartIncome = chartService.createIncomeChartHystogramm(0);
+        JFreeChart chartIncomeMonth = chartService.createIncomeChartHystogramm(1);
+        JFreeChart chartIncome3Months = chartService.createIncomeChartHystogramm(3);
+        JFreeChart chartIncomeLastYear = chartService.createIncomeChartHystogramm(12);
 
 
         model.addAttribute("incomeChart", chartIncome);
@@ -38,10 +34,10 @@ public class ChartController {
 
         //EXPENSES
 
-        JFreeChart chartExpense = chartService.createExpenseChart(0);
-        JFreeChart chartExpenseLastMonth = chartService.createExpenseChart(1);
-        JFreeChart chartExpense3Months = chartService.createExpenseChart(3);
-        JFreeChart chartExpenseLastYear = chartService.createExpenseChart(12);
+        JFreeChart chartExpense = chartService.createExpenseChartHystogramm(0);
+        JFreeChart chartExpenseLastMonth = chartService.createExpenseChartHystogramm(1);
+        JFreeChart chartExpense3Months = chartService.createExpenseChartHystogramm(3);
+        JFreeChart chartExpenseLastYear = chartService.createExpenseChartHystogramm(12);
 
         model.addAttribute("expenseChart", chartExpense);
         model.addAttribute("expenses3month", chartExpense3Months );

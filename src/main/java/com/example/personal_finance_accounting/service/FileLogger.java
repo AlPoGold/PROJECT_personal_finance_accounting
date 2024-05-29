@@ -21,4 +21,12 @@ public class FileLogger {
 
         }
     }
+
+    public static void clearAllLogs(){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

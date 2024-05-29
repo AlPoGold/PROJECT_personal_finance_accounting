@@ -39,7 +39,7 @@ public class GoalController {
                           @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                           @RequestParam("status")GoalStatusEnum status){
         goalService.addGoal(name, targetAmount, startDate, endDate, status);
-        FileLogger.log("adding new goal!");
+        FileLogger.log("adding new goal!|"+ targetAmount.toString());
         log.log(Level.INFO, "goal was added!");
 
 

@@ -14,7 +14,7 @@
                 <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+                <a class="nav-link " th:href="@{/incomes}">Incomes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/expenses}">Expenses</a>
@@ -32,6 +32,10 @@
     </div>
     <div class="main">
         <h1>Expenses</h1>
+        <div class="total_count">
+            <label>Total expenses: </label>
+            <span th:text="${totalExpenses}"></span>
+        </div>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
@@ -62,6 +66,7 @@
         </table>
     </div>
 
+
     <div class="add_form">
         <h2>Add expense</h2>
         <form action="/expenses" method="post">
@@ -84,9 +89,18 @@
             </table>
         </form>
     </div>
+    <div class="footer">
+        <div class="copyright">
+            <p>&copy; 2024 Колесникова Полина. Все права защищены. | Email: <a href="mailto:alraunepolina@yandex.ru">alraunepolina@yandex.ru</a></p>
+        </div>
+        <div class="danger-zone">
+            <h3>Danger Zone</h3>
+            <button class="btn btn-danger" onclick="deleteAllRecords()">Delete All Records</button>
+        </div>
+    </div>
 </div>
 <dialog id="editExpense">
-        <form id="editForm"  method="post">
+        <form id="editForm"  method="put">
             <input type="hidden" id="editId" name="id">
             <label for="amount">Amount:</label><br>
             <input type="text" id="editAmount" name="amount"><br>
@@ -94,9 +108,10 @@
             <input type="text" id="editCategory" name="category"><br>
             <label for="date">Date:</label><br>
             <input type="date" id="editDate" name="date"><br><br>
+            <button class="btn btn-primary" type="submit">Save</button>
 
         </form>
-        <button class="btn btn-primary" type="submit">Save</button>
+
         <button class="btn btn-secondary" id="closeDialogBtn" type="button" onclick="closeEditModal()">
             Close
         </button>
@@ -159,6 +174,28 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
         console.error('Error:', error);
     });
 });
+
+function deleteAllRecords() {
+    if (confirm('Are you sure you want to delete all records from all tables? This action cannot be undone.')) {
+        fetch('/deleteAll', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('All records have been successfully deleted.');
+                } else {
+                    alert('An error occurred while deleting records.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting records.');
+            });
+    }
+}
 
 </script>
 

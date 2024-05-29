@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,10 +19,8 @@ import java.util.Optional;
 @AllArgsConstructor
 @Log
 public class GoalService {
-    @Autowired
     private GoalRepository goalRepository;
 
-    @Autowired
     private BalanceService balanceService;
 
     public Optional<Goal> getGoalById(Long id){
@@ -56,7 +53,7 @@ public class GoalService {
                 goal.setStatus(GoalStatusEnum.IN_PROGRESS);
             }
             goal.setCurrentAmount(goal.getCurrentAmount()+amount);
-            if(goal.getCurrentAmount().equals(goal.getTargetAmount())){
+            if(Double.compare(goal.getCurrentAmount(),goal.getTargetAmount())>=0){
                 goal.setStatus(GoalStatusEnum.COMPLETED);
             }
             goalRepository.save(goal);

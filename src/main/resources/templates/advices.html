@@ -56,7 +56,15 @@
     <div class="spinner"></div>
     <p>Ожидайте ответа ИИ...</p>
   </div>
-  <div class="footer"></div>
+  <div class="footer">
+    <div class="copyright">
+      <p>&copy; 2024 Колесникова Полина. Все права защищены. | Email: <a href="mailto:alraunepolina@yandex.ru">alraunepolina@yandex.ru</a></p>
+    </div>
+    <div class="danger-zone">
+      <h3>Danger Zone</h3>
+      <button class="btn btn-danger" onclick="deleteAllRecords()">Delete All Records</button>
+    </div>
+  </div>
 </div>
 
 
@@ -82,6 +90,28 @@
     }, 10000); // 10 секунд задержка
   });
 });
+
+ function deleteAllRecords() {
+   if (confirm('Are you sure you want to delete all records from all tables? This action cannot be undone.')) {
+     fetch('/deleteAll', {
+       method: 'DELETE',
+       headers: {
+         'Content-Type': 'application/json'
+       }
+     })
+             .then(response => {
+               if (response.ok) {
+                 alert('All records have been successfully deleted.');
+               } else {
+                 alert('An error occurred while deleting records.');
+               }
+             })
+             .catch(error => {
+               console.error('Error:', error);
+               alert('An error occurred while deleting records.');
+             });
+   }
+ }
 
 </script>
 </html>

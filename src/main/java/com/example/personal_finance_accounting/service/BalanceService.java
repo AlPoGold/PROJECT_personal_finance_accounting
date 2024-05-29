@@ -2,6 +2,7 @@ package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Balance;
 import com.example.personal_finance_accounting.repository.ExpenseRepository;
+import com.example.personal_finance_accounting.repository.GoalRepository;
 import com.example.personal_finance_accounting.repository.IncomeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class BalanceService {
     private final IncomeRepository incomeRepository;
     private final ExpenseRepository expenseRepository;
+    private final GoalRepository goalRepository;
 
     public Balance calculateBalance() {
         BigDecimal totalIncome = incomeRepository.calculateTotalIncome();
@@ -87,5 +89,12 @@ public class BalanceService {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -years);
         return calendar.getTime();
+    }
+
+    public void deleteAllRecords() {
+        incomeRepository.deleteAll();
+        expenseRepository.deleteAll();
+        goalRepository.deleteAll();
+
     }
 }

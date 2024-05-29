@@ -4,9 +4,10 @@ import com.example.personal_finance_accounting.model.Balance;
 import com.example.personal_finance_accounting.service.BalanceService;
 import com.example.personal_finance_accounting.service.FileLogger;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +23,6 @@ import java.util.List;
 @RequestMapping("/index")
 public class BalanceController {
 
-    @Autowired
     private BalanceService service;
 
     @GetMapping
@@ -31,6 +31,11 @@ public class BalanceController {
         model.addAttribute("balance", balance);
         model.addAttribute("logEntries", readLogFile());
         return "index";
+    }
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<String> deleteAllRecords() {
+        service.deleteAllRecords();
+        return ResponseEntity.ok("All records have been successfully deleted.");
     }
 
     private List<String> readLogFile() {
@@ -47,6 +52,8 @@ public class BalanceController {
         int startIndex = Math.max(0, logEntries.size() - 10);
         return logEntries.subList(startIndex, logEntries.size());
     }
+
+
 
 
 }

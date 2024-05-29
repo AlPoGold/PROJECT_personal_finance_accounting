@@ -2,6 +2,10 @@
 
 .container img {
     border: 1px solid #000000;
+
+
+
+
 }
 
 .container h1 {
@@ -17,6 +21,14 @@
     padding: 50px;/* отступы 50 пикселей */
     margin: 50px;
 }
+.container .main .total_count {
+    margin-bottom: 20px;
+}
+.container .main. total_count label, .total_count span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 
 .carousel-inner img half_size_img{
   height: 50vh;
@@ -37,7 +49,7 @@
 }
 
 .message-response {
-  border: 2px solid black; /* Черная рамка толщиной 2 пикселя */
+  border: 2px solid black;
   width: 70%; /* Ширина контейнера на 70% родительского контейнера */
   margin: 0 auto; /* Центрирование контейнера по горизонтали */
   padding: 10px; /* Поля внутри контейнера */
@@ -73,3 +85,6 @@
 .hidden {
   display: none;
 }
+
+
+

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
 @Service
 @Data
 @AllArgsConstructor
@@ -26,26 +27,8 @@ public class ChartService {
     private final ExpenseService expenseService;
     private final BalanceService balanceService;
 
-    public JFreeChart createIncomeChart() {
-        // Получаем данные о доходах из репозитория
-        List<Income> incomes = incomeService.getAllIncomes();
 
-        // Создаем набор данных для графика
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (Income income : incomes) {
-            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
-        }
 
-        // Создаем график
-        JFreeChart chart = ChartFactory.createLineChart(
-                "IncomeTime",  // заголовок
-                "Date",              // ось X
-                "Amount",            // ось Y
-                dataset             // набор данных
-        );
-
-        return chart;
-    }
 
     public JFreeChart createExpenseChart(int period) {
         List<Expense> expences = null;
@@ -68,13 +51,128 @@ public class ChartService {
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         assert expences != null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         for (Expense expense:expences) {
-            dataset.addValue(expense.getAmount(), "Expense", expense.getDate().toString());
+            String formattedDate = formatter.format(expense.getDate());
+            dataset.addValue(expense.getAmount(), "Expense", formattedDate );
         }
-
-        // Создаем график
         JFreeChart chart = ChartFactory.createLineChart(
                 "ExpenseTime",  // заголовок
+                "Date",              // ось X
+                "Amount",            // ось Y
+                dataset             // набор данных
+        );
+
+        createImage(chart, period);
+
+        return chart;
+    }
+    public JFreeChart createExpenseChartHystogramm(int period) {
+        List<Expense> expences = null;
+        switch (period){
+            case 0:
+                expences = expenseService.getAllExpenses();
+                break;
+            case 1:
+                expences = expenseService.getAllExpensesForLastMonth();
+                break;
+            case 3:
+                expences = expenseService.getAllExpensesForLast3Months();
+                break;
+            case 12:
+                expences = expenseService.getAllExpensesForLastYear();
+                break;
+
+
+        }
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        assert expences != null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        for (Expense expense:expences) {
+            String formattedDate = formatter.format(expense.getDate());
+            dataset.addValue(expense.getAmount(), "Expense", formattedDate);
+        }
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "ExpenseTime",
+                "Date",                   // x-axis label
+                "expense",                // y-axis label
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false);
+        createImage(chart, period);
+
+        return chart;
+    }
+
+    public JFreeChart createIncomeChartHystogramm(int period){
+        List<Income> incomes = null;
+        switch (period){
+            case 0:
+                incomes = incomeService.getAllIncomes();
+                break;
+            case 1:
+                incomes = incomeService.getAllIncomesForLastMonth();
+                break;
+            case 3:
+                incomes = incomeService.getAllIncomesForLast3Months();
+                break;
+            case 12:
+                incomes = incomeService.getAllIncomesForLastYear();
+                break;
+
+
+        }
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        for (Income income: incomes) {
+            String formattedDate = formatter.format(income.getDate());
+            dataset.addValue(income.getAmount(), "Income", formattedDate);
+        }
+        JFreeChart chart = ChartFactory.createBarChart(
+                "IncomeTime",
+                "Date",                   // x-axis label
+                "income",                // y-axis label
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false);
+
+        createImage(chart, period);
+        return chart;
+
+
+    }
+    public JFreeChart createIncomeChart(int period) {
+        List<Income> incomes = null;
+        switch (period){
+            case 0:
+                incomes = incomeService.getAllIncomes();
+                break;
+            case 1:
+                incomes = incomeService.getAllIncomesForLastMonth();
+                break;
+            case 3:
+                incomes = incomeService.getAllIncomesForLast3Months();
+                break;
+            case 12:
+                incomes = incomeService.getAllIncomesForLastYear();
+                break;
+
+
+        }
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        assert incomes != null;
+        for (Income income: incomes) {
+            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
+        }
+        JFreeChart chart = ChartFactory.createLineChart(
+                "IncomeTime",  // заголовок
                 "Date",              // ось X
                 "Amount",            // ось Y
                 dataset             // набор данных
@@ -101,14 +199,12 @@ public class ChartService {
                 balance = balanceService.calculateBalanceForLastYear();
                 break;
 
-
         }
 
 
         DefaultPieDataset dataset = new DefaultPieDataset();
-        // Добавляем значения в набор данных
-        dataset.setValue("Доходы", balance.getTotalIncome());
-        dataset.setValue("Расходы", balance.getTotalExpense());
+        dataset.setValue("Incomes", balance.getTotalIncome());
+        dataset.setValue("Expenses", balance.getTotalExpense());
         JFreeChart chart = ChartFactory.createPieChart(
                 "Balance", // Заголовок диаграммы
                 dataset,            // Набор данных
@@ -121,71 +217,9 @@ public class ChartService {
 
     }
 
-    public JFreeChart createIncomeChart3Months() {
-        // Получаем данные о доходах из репозитория
-        List<Income> incomes = incomeService.getAllIncomesForLast3Months();
-
-        // Создаем набор данных для графика
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (Income income : incomes) {
-            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
-        }
-
-        // Создаем график
-        JFreeChart chart = ChartFactory.createLineChart(
-                "IncomeTime",  // заголовок
-                "Date",              // ось X
-                "Amount",            // ось Y
-                dataset             // набор данных
-        );
-
-        return chart;
-    }
-
-    public JFreeChart createIncomeChartLastMonth() {
-        // Получаем данные о доходах из репозитория
-        List<Income> incomes = incomeService.getAllIncomesForLastMonth();
-
-        // Создаем набор данных для графика
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (Income income : incomes) {
-            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
-        }
-
-        // Создаем график
-        JFreeChart chart = ChartFactory.createLineChart(
-                "IncomeTime",  // заголовок
-                "Date",              // ось X
-                "Amount",            // ось Y
-                dataset             // набор данных
-        );
-
-        return chart;
-    }
-
-    public JFreeChart createIncomeChartLastYear() {
-        // Получаем данные о доходах из репозитория
-        List<Income> incomes = incomeService.getAllIncomesForLastYear();
-
-        // Создаем набор данных для графика
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (Income income : incomes) {
-            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
-        }
-
-        // Создаем график
-        JFreeChart chart = ChartFactory.createLineChart(
-                "IncomeTime",  // заголовок
-                "Date",              // ось X
-                "Amount",            // ось Y
-                dataset             // набор данных
-        );
-
-        return chart;
-    }
 
     public void createImage(JFreeChart chart, int period){
-        BufferedImage imageIncome = chart.createBufferedImage(400, 600);
+        BufferedImage imageIncome = chart.createBufferedImage(800, 800);
         File outputFileIncome = new File("src/main/resources/static/img/" + chart.getTitle().getText() + period + ".png");
         try {
             ImageIO.write(imageIncome, "png", outputFileIncome);

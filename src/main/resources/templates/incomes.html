@@ -34,6 +34,13 @@
   </div>
   <div class="main">
     <h1>Incomes</h1>
+    <div class="total_count">
+      <label>Total incomes: </label>
+      <span th:text="${totalIncomes}"></span>
+
+      <label>Total reservation for your goals: </label>
+      <span th:text="${totalReservations}"></span>
+    </div>
     <table class="table table-bordered table-hover">
       <thead>
       <tr>
@@ -63,6 +70,7 @@
       </tbody>
     </table>
   </div>
+
 
   <div class="add_form">
     <h2>Add income</h2>
@@ -104,6 +112,16 @@
       </table>
     </form>
 
+  </div>
+
+  <div class="footer">
+    <div class="copyright">
+      <p>&copy; 2024 Колесникова Полина. Все права защищены. | Email: <a href="mailto:alraunepolina@yandex.ru">alraunepolina@yandex.ru</a></p>
+    </div>
+    <div class="danger-zone">
+      <h3>Danger Zone</h3>
+      <button class="btn btn-danger" onclick="deleteAllRecords()">Delete All Records</button>
+    </div>
   </div>
 </div>
 <dialog id="editIncome">
@@ -205,9 +223,7 @@ document.getElementById('goalsForm').addEventListener('submit', function(event) 
     })
     .then(response => {
         if (response.ok) {
-            // Если ответ успешный, перенаправляем пользователя на страницу целей
-            window.location.reload();
-            document.getElementById('goalsForm').reset();
+            window.location.href= "/goals";
         } else {
             // В случае ошибки выводим сообщение об ошибке в консоль
             console.error('Error:', response.statusText);
@@ -218,7 +234,27 @@ document.getElementById('goalsForm').addEventListener('submit', function(event) 
         console.error('Error:', error);
     });
 });
-
+function deleteAllRecords() {
+  if (confirm('Are you sure you want to delete all records from all tables? This action cannot be undone.')) {
+    fetch('/deleteAll', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+            .then(response => {
+              if (response.ok) {
+                alert('All records have been successfully deleted.');
+              } else {
+                alert('An error occurred while deleting records.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while deleting records.');
+            });
+  }
+}
 </script>
 
 </html>

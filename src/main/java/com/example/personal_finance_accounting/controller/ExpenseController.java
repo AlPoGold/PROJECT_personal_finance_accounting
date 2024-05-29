@@ -5,13 +5,13 @@ import com.example.personal_finance_accounting.service.ExpenseService;
 import com.example.personal_finance_accounting.service.FileLogger;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +23,17 @@ import java.util.logging.Level;
 @Log
 public class ExpenseController {
 
-    @Autowired
     private ExpenseService expenseService;
 
     @GetMapping
     public String getExpenses(Model model) {
         List<Expense> expenses = expenseService.getAllExpenses();
+        expenses.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        BigDecimal totalExpenses = expenses.stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         model.addAttribute("expenses", expenses);
+        model.addAttribute("totalExpenses", totalExpenses);
         return "expenses";
     }
 

@@ -38,3 +38,5 @@
 2024-05-23|income was added!|+200
 2024-05-23|income was added!|+9999
 2024-05-24|expense was added!|-8900
+2024-05-29|income was added!|+4569
+2024-05-29|income was deleted!|+4569.00
