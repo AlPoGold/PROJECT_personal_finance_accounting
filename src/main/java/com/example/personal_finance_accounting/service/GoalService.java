@@ -2,6 +2,7 @@ package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Goal;
 import com.example.personal_finance_accounting.model.GoalStatusEnum;
+import com.example.personal_finance_accounting.model.UserAccount;
 import com.example.personal_finance_accounting.repository.GoalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,10 @@ import lombok.Data;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +27,15 @@ public class GoalService {
 
     private BalanceService balanceService;
 
+    public List<Goal> getUserGoals(UserAccount userAccount) {
+        return goalRepository.findByUserAccount(userAccount);
+    }
+
+    public void addGoal(Goal goal, UserAccount userAccount) {
+        goal.setUserAccount(userAccount);
+        goalRepository.save(goal);
+    }
+
     public Optional<Goal> getGoalById(Long id){
         return goalRepository.findById(id);
     }
@@ -31,7 +44,8 @@ public class GoalService {
         return goalRepository.findAll();
     }
 
-    public void addGoal(String name, Double targetAmount, LocalDate startDate, LocalDate endDate, GoalStatusEnum status) {
+    public Goal addGoal(String name, Double targetAmount, LocalDate startDate, LocalDate endDate,
+                        GoalStatusEnum status, UserAccount userAccount) {
         Goal goal = new Goal();
         goal.setName(name);
         goal.setTargetAmount(targetAmount);
@@ -41,7 +55,7 @@ public class GoalService {
 
         goalRepository.save(goal);
 
-
+        return goal;
     }
 
     @Transactional
@@ -90,6 +104,23 @@ public class GoalService {
         } else {
             throw new EntityNotFoundException("Goal with id " + id + " not found");
         }
+
+    }
+    private static Date convertToDate(LocalDate localDate) {
+        // Преобразование LocalDate в Instant
+        Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        // Преобразование Instant в Date
+        return Date.from(instant);
+    }
+
+    public void initialRepo(UserAccount userAccount) {
+        Goal goal = addGoal("exampleGoal", 1000.00,
+                LocalDate.now(),
+                LocalDate.now(),
+                GoalStatusEnum.NOT_STARTED,
+                userAccount);
+
+        goalRepository.save(goal);
 
     }
 }

@@ -1,12 +1,15 @@
 package com.example.personal_finance_accounting.controller;
 
 import com.example.personal_finance_accounting.model.Expense;
+import com.example.personal_finance_accounting.model.UserAccount;
 import com.example.personal_finance_accounting.service.ExpenseService;
 import com.example.personal_finance_accounting.service.FileLogger;
+import com.example.personal_finance_accounting.service.UserAccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +27,12 @@ import java.util.logging.Level;
 public class ExpenseController {
 
     private ExpenseService expenseService;
+    private UserAccountService userAccountService;
 
     @GetMapping
-    public String getExpenses(Model model) {
-        List<Expense> expenses = expenseService.getAllExpenses();
+    public String getExpenses(Model model, Authentication authentication) {
+        UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
+        List<Expense> expenses = expenseService.getUserExpenses(userAccount);
         expenses.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         BigDecimal totalExpenses = expenses.stream()
                 .map(Expense::getAmount)
@@ -40,8 +45,9 @@ public class ExpenseController {
     @PostMapping
     public String addExpense(@RequestParam("amount") String amount,
                             @RequestParam("category") String category,
-                            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
-        expenseService.addExpense(amount, category, date);
+                            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                             Authentication authentication){
+        expenseService.addExpense(amount, category, date, userAccountService.findByEmail(authentication.getName()));
         log.log(Level.INFO, "expense was added!");
         FileLogger.log("expense was added!" + "|" + "-" +amount);
 

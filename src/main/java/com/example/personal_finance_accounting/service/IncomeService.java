@@ -1,6 +1,7 @@
 package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Income;
+import com.example.personal_finance_accounting.model.UserAccount;
 import com.example.personal_finance_accounting.repository.IncomeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -9,11 +10,13 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 
 @AllArgsConstructor
 @Service
@@ -23,17 +26,22 @@ public class IncomeService {
 
     private IncomeRepository incomeRepository;
 
+    public List<Income> getUserIncomes(UserAccount userAccount) {
+        return incomeRepository.findByUserAccount(userAccount);
+    }
+
+
     public List<Income> getAllIncomes(){
-        log.log(Level.INFO, incomeRepository.findAll().toString());
         return incomeRepository.findAll();
     }
 
-    public Income addIncome(String amount, String source, Date date) {
+    public Income addIncome(String amount, String source, Date date, UserAccount userAccount) {
 
         Income newIncome = new Income();
         newIncome.setAmount(BigDecimal.valueOf(Long.parseLong(amount)));
         newIncome.setSource(source);
         newIncome.setDate(date);
+        newIncome.setUserAccount(userAccount);
         return incomeRepository.save(newIncome);
     }
 
@@ -46,7 +54,7 @@ public class IncomeService {
     }
 
     @Transactional
-    public void updateById(Long id, Income updatedIncome) {
+    public void updateById(Long id, Income updatedIncome, UserAccount userAccount) {
         Optional<Income> incomeOptional = incomeRepository.findById(id);
         if (incomeOptional.isPresent()) {
             Income income = incomeOptional.get();
@@ -59,7 +67,7 @@ public class IncomeService {
         }
     }
 
-    public List<Income> getAllIncomesForLast3Months() {
+    public List<Income> getAllIncomesForLast3Months(UserAccount userAccount) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -3);
         Date threeMonthsAgo = calendar.getTime();
@@ -67,7 +75,7 @@ public class IncomeService {
         return incomeRepository.findIncomesByDateRange(threeMonthsAgo, today);
     }
 
-    public List<Income> getAllIncomesForLastYear() {
+    public List<Income> getAllIncomesForLastYear(UserAccount userAccount) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -1);
         Date oneYearAgo = calendar.getTime();
@@ -75,7 +83,7 @@ public class IncomeService {
         return incomeRepository.findIncomesByDateRange(oneYearAgo, today);
     }
 
-    public List<Income> getAllIncomesForLastMonth() {
+    public List<Income> getAllIncomesForLastMonth(UserAccount userAccount) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
         Date oneMonthAgo = calendar.getTime();
@@ -84,4 +92,14 @@ public class IncomeService {
     }
 
 
+    public void initialRepo(UserAccount userAccount) {
+        Income income = addIncome("1000", "example", convertToDate(LocalDate.now()), userAccount);
+        incomeRepository.save(income);
+
+    }
+
+    private static Date convertToDate(LocalDate localDate) {
+        Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }
 }

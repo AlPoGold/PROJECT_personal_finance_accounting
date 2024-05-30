@@ -3,6 +3,7 @@ package com.example.personal_finance_accounting.service;
 import com.example.personal_finance_accounting.model.Balance;
 import com.example.personal_finance_accounting.model.Expense;
 import com.example.personal_finance_accounting.model.Income;
+import com.example.personal_finance_accounting.model.UserAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jfree.chart.ChartFactory;
@@ -26,7 +27,7 @@ public class ChartService {
     private final IncomeService incomeService;
     private final ExpenseService expenseService;
     private final BalanceService balanceService;
-
+    private final UserAccountService userService;
 
 
 

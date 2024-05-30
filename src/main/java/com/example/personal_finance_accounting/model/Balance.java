@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name="balances")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Balance {
@@ -23,4 +22,5 @@ public class Balance {
     private BigDecimal totalIncome;
     private BigDecimal totalExpense;
     private BigDecimal totalBalance;
+
 }

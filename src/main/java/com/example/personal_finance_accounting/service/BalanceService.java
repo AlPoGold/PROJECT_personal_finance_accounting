@@ -1,6 +1,8 @@
 package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.Balance;
+import com.example.personal_finance_accounting.model.UserAccount;
+import com.example.personal_finance_accounting.repository.BalanceRepository;
 import com.example.personal_finance_accounting.repository.ExpenseRepository;
 import com.example.personal_finance_accounting.repository.GoalRepository;
 import com.example.personal_finance_accounting.repository.IncomeRepository;
@@ -14,9 +16,37 @@ import java.util.Date;
 @Service
 @AllArgsConstructor
 public class BalanceService {
+    private final BalanceRepository balanceRepository;
     private final IncomeRepository incomeRepository;
     private final ExpenseRepository expenseRepository;
     private final GoalRepository goalRepository;
+
+
+
+    public Balance getUserBalance(UserAccount userAccount) {
+        Balance balance = balanceRepository.findByUserAccount(userAccount);
+        if(balance!=null){
+            updateBalance(balance);
+        }
+
+        return balance;
+    }
+
+    private void updateBalance(Balance balance) {
+        BigDecimal totalIncome = incomeRepository.calculateTotalIncome();
+        BigDecimal totalExpense = expenseRepository.calculateTotalExpense();
+        BigDecimal totalBalance = totalIncome.subtract(totalExpense);
+
+        balance.setTotalIncome(totalIncome);
+        balance.setTotalExpense(totalExpense);
+        balance.setTotalBalance(totalBalance);
+    }
+
+    public void addBalance(UserAccount userAccount) {
+        Balance balance = calculateBalance();
+        balance.setUserAccount(userAccount);
+        balanceRepository.save(balance);
+    }
 
     public Balance calculateBalance() {
         BigDecimal totalIncome = incomeRepository.calculateTotalIncome();
@@ -29,6 +59,18 @@ public class BalanceService {
         balance.setTotalBalance(totalBalance);
 
         return balance;
+    }
+
+    public Balance initialBalance(UserAccount userAccount){
+        Balance balance = new Balance();
+        balance.setTotalIncome(BigDecimal.ZERO);
+        balance.setTotalExpense(BigDecimal.ZERO);
+        balance.setTotalBalance(BigDecimal.ZERO);
+        balance.setUserAccount(userAccount);
+        balanceRepository.save(balance);
+
+        return balance;
+
     }
 
     public Balance calculateBalanceForLastMonth() {
@@ -95,6 +137,7 @@ public class BalanceService {
         incomeRepository.deleteAll();
         expenseRepository.deleteAll();
         goalRepository.deleteAll();
+        balanceRepository.deleteAll();
 
     }
 }

@@ -2,13 +2,16 @@ package com.example.personal_finance_accounting.controller;
 
 import com.example.personal_finance_accounting.model.Goal;
 import com.example.personal_finance_accounting.model.Income;
+import com.example.personal_finance_accounting.model.UserAccount;
 import com.example.personal_finance_accounting.service.FileLogger;
 import com.example.personal_finance_accounting.service.GoalService;
 import com.example.personal_finance_accounting.service.IncomeService;
+import com.example.personal_finance_accounting.service.UserAccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +30,14 @@ import java.util.logging.Level;
 public class IncomeController {
     private GoalService goalService;
     private IncomeService incomeService;
+    private UserAccountService userAccountService;
 
     @GetMapping
-    public String getIncomes(Model model) {
-        List<Income> incomes = incomeService.getAllIncomes();
+    public String getIncomes(Model model, Authentication authentication) {
+
+        UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
+        List<Income> incomes = incomeService.getUserIncomes(userAccount);
+
         incomes.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 
         BigDecimal totalIncomes = incomes.stream()
@@ -49,8 +56,9 @@ public class IncomeController {
     @PostMapping
     public String addIncome(@RequestParam("amount") String amount,
                             @RequestParam("source") String source,
-                            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
-        incomeService.addIncome(amount, source, date);
+                            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, Authentication auth){
+        UserAccount userAccount = userAccountService.findByEmail(auth.getName());
+        incomeService.addIncome(amount, source, date, userAccount);
         log.log(Level.INFO, "income was added!");
         FileLogger.log("income was added!" + "|" + "+" +amount);
 

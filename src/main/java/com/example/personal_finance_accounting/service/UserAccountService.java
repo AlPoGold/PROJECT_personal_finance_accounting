@@ -1,9 +1,11 @@
 package com.example.personal_finance_accounting.service;
 
 import com.example.personal_finance_accounting.model.UserAccount;
+import com.example.personal_finance_accounting.model.UserRegisteredEvent;
 import com.example.personal_finance_accounting.repository.UserAccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class UserAccountService {
 
     UserAccountRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
     private BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
@@ -25,6 +28,7 @@ public class UserAccountService {
     public UserAccount createUserAccount(UserAccount userAccount) {
         userAccount.setPassword(encoder().encode(userAccount.getPassword()));
         UserAccount user =  userRepository.save(userAccount);
+        eventPublisher.publishEvent(new UserRegisteredEvent(this, user));
         return user;
     }
 
@@ -54,5 +58,10 @@ public class UserAccountService {
     public void deleteUserAccount(Long id) {
         UserAccount userAccount = getUserAccountById(id); // Reuse getUserAccountById to ensure the user account exists
         userRepository.delete(userAccount);
+    }
+
+    public UserAccount findByEmail(String email) {
+        Optional<UserAccount> userAccountOptional =  userRepository.findByEmail(email);
+        return userAccountOptional.orElseThrow(() -> new RuntimeException("User account not found for email: " + email));
     }
 }

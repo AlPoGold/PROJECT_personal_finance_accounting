@@ -1,6 +1,7 @@
 package com.example.personal_finance_accounting.repository;
 
 import com.example.personal_finance_accounting.model.Expense;
+import com.example.personal_finance_accounting.model.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +27,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("SELECT e FROM Expense e WHERE e.date BETWEEN :startDate AND :endDate")
     List<Expense> findExpensesByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-
+    @Query("SELECT e FROM Expense e WHERE e.userAccount = :userAccount")
+    List<Expense> findByUserAccount(@Param("userAccount") UserAccount userAccount);
 }
