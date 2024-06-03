@@ -17,8 +17,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserAccountService {
 
-    UserAccountRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher;
+
+    private UserAccountRepository userRepository;
+    private ApplicationEventPublisher eventPublisher;
     private BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }

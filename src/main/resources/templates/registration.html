@@ -24,6 +24,14 @@
             <label for="inputName" class="form-label">Name</label>
             <input th:field="*{username}" type="text" name="name" class="form-control" id="inputName" placeholder="Your name">
         </div>
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">City</label>
+            <input th:field="*{city}" type="text" name="city" class="form-control" id="inputCity" placeholder="Your city">
+        </div>
+        <div class="col-md-6">
+            <label for="inputBirthDate" class="form-label">Birth date</label>
+            <input th:field="*{birthDate}" type="date" name="birthDate" class="form-control" id="inputBirthDate" placeholder="Your birthday">
+        </div>
 
         <div class="col-12">
             <button type="submit" class="btn btn-primary">REGISTER</button>

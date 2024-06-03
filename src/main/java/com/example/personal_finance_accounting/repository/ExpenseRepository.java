@@ -29,4 +29,23 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Query("SELECT e FROM Expense e WHERE e.userAccount = :userAccount")
     List<Expense> findByUserAccount(@Param("userAccount") UserAccount userAccount);
+
+
+    //According userAccount
+
+
+    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.userAccount = :userAccount")
+    BigDecimal calculateTotalExpenseUser(@Param("userAccount") UserAccount userAccount);
+
+    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.date BETWEEN :startDate AND :endDate AND e.userAccount = :userAccount")
+    BigDecimal calculateTotalExpenseByDateRangeUser(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userAccount") UserAccount userAccount);
+
+    @Query("SELECT e FROM Expense e WHERE e.date BETWEEN :startDate AND :endDate AND e.userAccount = :userAccount")
+    List<Expense> findExpenseByDateRangeUser(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userAccount") UserAccount userAccount);
+
+
+//    @Modifying
+//    @Transactional
+//    @Query("UPDATE Expense e SET e.amount = :amount, e.category = :category, e.date = :date WHERE e.id = :id AND e.userAccount = :userAccount")
+//    void updateByIdAndUserAccount(@Param("id") Long id, @Param("amount") BigDecimal amount, @Param("category") String category, @Param("date") Date date, @Param("userAccount") UserAccount userAccount);
 }

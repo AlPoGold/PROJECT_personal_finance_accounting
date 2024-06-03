@@ -34,6 +34,7 @@ public class GoalController {
         UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
         List<Goal> goals = goalService.getUserGoals(userAccount);
         model.addAttribute("listGoals", goals);
+        model.addAttribute("userId", userAccount.getUserId());
         return "goals";
     }
 
@@ -46,7 +47,7 @@ public class GoalController {
                           Authentication auth){
         UserAccount userAccount = userAccountService.findByEmail(auth.getName());
         goalService.addGoal(name, targetAmount, startDate, endDate, status, userAccount);
-        FileLogger.log("adding new goal!|"+ targetAmount.toString());
+        FileLogger.log(userAccount, "adding new goal!|"+ targetAmount.toString());
         log.log(Level.INFO, "goal was added!");
 
 
@@ -72,10 +73,10 @@ public class GoalController {
         return ResponseEntity.ok("Goal updated successfully");
     }
 
-    @DeleteMapping("goals/delete/{id}")
-    public ResponseEntity<Void> deleteGoal(@PathVariable Long id) {
+    @GetMapping("goals/delete/{id}")
+    public String deleteGoal(@PathVariable Long id) {
         goalService.deleteGoal(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/goals";
     }
 
 }

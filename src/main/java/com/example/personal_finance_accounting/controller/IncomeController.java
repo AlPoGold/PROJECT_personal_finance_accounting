@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -31,6 +30,8 @@ public class IncomeController {
     private GoalService goalService;
     private IncomeService incomeService;
     private UserAccountService userAccountService;
+
+
 
     @GetMapping
     public String getIncomes(Model model, Authentication authentication) {
@@ -44,12 +45,13 @@ public class IncomeController {
                 .map(Income::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        List<Goal> goals = goalService.getAllGoals();
+        List<Goal> goals = goalService.findByUserAccount(userAccount);
 
         Double totalReservations = goals.stream().mapToDouble(Goal::getCurrentAmount).sum();
         model.addAttribute("incomes", incomes);
         model.addAttribute("totalIncomes", totalIncomes);
         model.addAttribute("totalReservations", totalReservations);
+        model.addAttribute("userId", userAccount.getUserId());
         return "incomes";
     }
 
@@ -60,7 +62,7 @@ public class IncomeController {
         UserAccount userAccount = userAccountService.findByEmail(auth.getName());
         incomeService.addIncome(amount, source, date, userAccount);
         log.log(Level.INFO, "income was added!");
-        FileLogger.log("income was added!" + "|" + "+" +amount);
+        FileLogger.log(userAccount, "income was added!" + "|" + "+" +amount);
 
 
 
@@ -69,9 +71,7 @@ public class IncomeController {
 
     @GetMapping("/delete/{id}")
     public String deleteIncome(@PathVariable("id") Long id) {
-        FileLogger.log("income was deleted!" + "|" + "+" + Objects.requireNonNull(incomeService.findById(id).orElse(null)).getAmount());
         incomeService.deleteById(id);
-
         return "redirect:/incomes";
     }
 
@@ -83,13 +83,14 @@ public class IncomeController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateIncome(@PathVariable("id") Long id, @RequestBody Income updatedIncome) {
+    public ResponseEntity<String> updateIncome(@PathVariable("id") Long id, @RequestBody Income updatedIncome, Authentication auth) {
         // Проверяем, существует ли запись с указанным id
+        UserAccount user = userAccountService.findByEmail(auth.getName());
         Optional<Income> existingIncomeOptional = incomeService.findById(id);
         if (existingIncomeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        incomeService.updateById(id, updatedIncome);
+        incomeService.updateById(id, updatedIncome, user);
 
         return ResponseEntity.ok("Income updated successfully");
     }

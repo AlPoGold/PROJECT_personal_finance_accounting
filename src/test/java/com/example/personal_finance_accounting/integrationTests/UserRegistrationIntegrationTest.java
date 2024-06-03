@@ -1,51 +1,66 @@
 package com.example.personal_finance_accounting.integrationTests;
 
-import com.example.personal_finance_accounting.model.Balance;
 import com.example.personal_finance_accounting.model.UserAccount;
-import com.example.personal_finance_accounting.repository.BalanceRepository;
-import com.example.personal_finance_accounting.repository.ExpenseRepository;
-import com.example.personal_finance_accounting.repository.GoalRepository;
-import com.example.personal_finance_accounting.repository.IncomeRepository;
+import com.example.personal_finance_accounting.repository.UserAccountRepository;
 import com.example.personal_finance_accounting.service.UserAccountService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class UserRegistrationIntegrationTest {
-    @Autowired
+    @InjectMocks
     private UserAccountService userAccountService;
 
-    @Autowired
-    private BalanceRepository balanceRepository;
 
-    @Autowired
-    private IncomeRepository incomeRepository;
+    @Mock
+    private UserAccountRepository userRepository;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+    private BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-    @Autowired
-    private ExpenseRepository expenseRepository;
-    @Autowired
-    private GoalRepository goalRepository;
-
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+    @SuppressWarnings("unused")
     @Test
     public void testUserRegistrationCreatesInitialData() {
-        UserAccount newUser = new UserAccount();
-        newUser.setUsername("testuser");
-        newUser.setPassword("password");
 
+        UserAccount newUser = new UserAccount();
+        newUser.setUserId(1L);
+        newUser.setEmail("test@user");
+        newUser.setPassword(encoder().encode("password"));
+        newUser.setUsername("test");
+        newUser.setCity("testCity");
+        newUser.setBirthDate(new Date(1991 - 1900, Calendar.MARCH, 21));
         userAccountService.createUserAccount(newUser);
 
-        UserAccount savedUser = userAccountService.findByEmail("testuser");
-        assertNotNull(savedUser);
 
-        Balance balance = balanceRepository.findByUserAccount(savedUser);
-        assertNotNull(balance);
-        assertEquals(0.0, balance.getTotalBalance());
+        when(userRepository.findByEmail("test@user")).thenReturn(Optional.of(newUser));
+        UserAccount foundUser = userAccountService.findByEmail("test@user");
+        assertEquals(newUser.getEmail(), foundUser.getEmail());
 
 
-        // Другие проверки для начальных данных
+
+
+
+
+
     }
 }

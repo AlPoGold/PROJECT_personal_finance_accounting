@@ -26,15 +26,15 @@ public class BalanceService {
     public Balance getUserBalance(UserAccount userAccount) {
         Balance balance = balanceRepository.findByUserAccount(userAccount);
         if(balance!=null){
-            updateBalance(balance);
+            updateBalance(balance, userAccount);
         }
 
         return balance;
     }
 
-    private void updateBalance(Balance balance) {
-        BigDecimal totalIncome = incomeRepository.calculateTotalIncome();
-        BigDecimal totalExpense = expenseRepository.calculateTotalExpense();
+    private void updateBalance(Balance balance, UserAccount user) {
+        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeUser(user);
+        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseUser(user);
         BigDecimal totalBalance = totalIncome.subtract(totalExpense);
 
         balance.setTotalIncome(totalIncome);
@@ -43,14 +43,14 @@ public class BalanceService {
     }
 
     public void addBalance(UserAccount userAccount) {
-        Balance balance = calculateBalance();
+        Balance balance = calculateBalance(userAccount);
         balance.setUserAccount(userAccount);
         balanceRepository.save(balance);
     }
 
-    public Balance calculateBalance() {
-        BigDecimal totalIncome = incomeRepository.calculateTotalIncome();
-        BigDecimal totalExpense = expenseRepository.calculateTotalExpense();
+    public Balance calculateBalance(UserAccount user) {
+        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeUser(user);
+        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseUser(user);
         BigDecimal totalBalance = totalIncome.subtract(totalExpense);
 
         Balance balance = new Balance();
@@ -73,12 +73,12 @@ public class BalanceService {
 
     }
 
-    public Balance calculateBalanceForLastMonth() {
+    public Balance calculateBalanceForLastMonth(UserAccount user) {
         Date startDate = getDateMonthsAgo(1);
         Date endDate = new Date();
 
-        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeByDateRange(startDate, endDate);
-        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseByDateRange(startDate, endDate);
+        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeByDateRangeUser(startDate, endDate, user);
+        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseByDateRangeUser(startDate, endDate, user);
         BigDecimal totalBalance = totalIncome.subtract(totalExpense);
 
         Balance balance = new Balance();
@@ -89,12 +89,12 @@ public class BalanceService {
         return balance;
     }
 
-    public Balance calculateBalanceForLast3Months() {
+    public Balance calculateBalanceForLast3Months(UserAccount user) {
         Date startDate = getDateMonthsAgo(3);
         Date endDate = new Date();
 
-        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeByDateRange(startDate, endDate);
-        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseByDateRange(startDate, endDate);
+        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeByDateRangeUser(startDate, endDate, user);
+        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseByDateRangeUser(startDate, endDate, user);
         BigDecimal totalBalance = totalIncome.subtract(totalExpense);
 
         Balance balance = new Balance();
@@ -105,12 +105,12 @@ public class BalanceService {
         return balance;
     }
 
-    public Balance calculateBalanceForLastYear() {
+    public Balance calculateBalanceForLastYear(UserAccount user) {
         Date startDate = getDateYearsAgo(1);
         Date endDate = new Date();
 
-        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeByDateRange(startDate, endDate);
-        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseByDateRange(startDate, endDate);
+        BigDecimal totalIncome = incomeRepository.calculateTotalIncomeByDateRangeUser(startDate, endDate, user);
+        BigDecimal totalExpense = expenseRepository.calculateTotalExpenseByDateRangeUser(startDate, endDate, user);
         BigDecimal totalBalance = totalIncome.subtract(totalExpense);
 
         Balance balance = new Balance();

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,13 +33,19 @@ public class ExpenseController {
     @GetMapping
     public String getExpenses(Model model, Authentication authentication) {
         UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
+        Long userId = userAccount.getUserId();
         List<Expense> expenses = expenseService.getUserExpenses(userAccount);
-        expenses.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        if(expenses.size()>=2){
+            expenses.sort(Comparator.comparing(Expense::getDate));
+
+        }
+
         BigDecimal totalExpenses = expenses.stream()
                 .map(Expense::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         model.addAttribute("expenses", expenses);
         model.addAttribute("totalExpenses", totalExpenses);
+        model.addAttribute("userId", userId);
         return "expenses";
     }
 
@@ -47,9 +54,10 @@ public class ExpenseController {
                             @RequestParam("category") String category,
                             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                              Authentication authentication){
-        expenseService.addExpense(amount, category, date, userAccountService.findByEmail(authentication.getName()));
+        UserAccount user = userAccountService.findByEmail(authentication.getName());
+        expenseService.addExpense(amount, category, date, user);
         log.log(Level.INFO, "expense was added!");
-        FileLogger.log("expense was added!" + "|" + "-" +amount);
+        FileLogger.log(user, "expense was added!" + "|" + "-" +amount);
 
 
         return "redirect:/expenses";

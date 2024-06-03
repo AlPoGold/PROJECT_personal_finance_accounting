@@ -31,20 +31,20 @@ public class ChartService {
 
 
 
-    public JFreeChart createExpenseChart(int period) {
+    public JFreeChart createExpenseChart(UserAccount userAccount, int period) {
         List<Expense> expences = null;
         switch (period){
             case 0:
-                expences = expenseService.getAllExpenses();
+                expences = expenseService.findByUserAccount(userAccount);
                 break;
             case 1:
-                expences = expenseService.getAllExpensesForLastMonth();
+                expences = expenseService.getAllExpensesForLastMonth(userAccount);
                 break;
             case 3:
-                expences = expenseService.getAllExpensesForLast3Months();
+                expences = expenseService.getAllExpensesForLast3Months(userAccount);
                 break;
             case 12:
-                expences = expenseService.getAllExpensesForLastYear();
+                expences = expenseService.getAllExpensesForLastYear(userAccount);
                 break;
 
 
@@ -68,20 +68,20 @@ public class ChartService {
 
         return chart;
     }
-    public JFreeChart createExpenseChartHystogramm(int period) {
+    public JFreeChart createExpenseChartHystogramm(int period, UserAccount user) {
         List<Expense> expences = null;
         switch (period){
             case 0:
-                expences = expenseService.getAllExpenses();
+                expences = expenseService.findByUserAccount(user);
                 break;
             case 1:
-                expences = expenseService.getAllExpensesForLastMonth();
+                expences = expenseService.getAllExpensesForLastMonth(user);
                 break;
             case 3:
-                expences = expenseService.getAllExpensesForLast3Months();
+                expences = expenseService.getAllExpensesForLast3Months(user);
                 break;
             case 12:
-                expences = expenseService.getAllExpensesForLastYear();
+                expences = expenseService.getAllExpensesForLastYear(user);
                 break;
 
 
@@ -109,20 +109,20 @@ public class ChartService {
         return chart;
     }
 
-    public JFreeChart createIncomeChartHystogramm(int period){
+    public JFreeChart createIncomeChartHystogramm(int period, UserAccount user){
         List<Income> incomes = null;
         switch (period){
             case 0:
-                incomes = incomeService.getAllIncomes();
+                incomes = incomeService.getUserIncomes(user);
                 break;
             case 1:
-                incomes = incomeService.getAllIncomesForLastMonth();
+                incomes = incomeService.getAllIncomesForLastMonth(user);
                 break;
             case 3:
-                incomes = incomeService.getAllIncomesForLast3Months();
+                incomes = incomeService.getAllIncomesForLast3Months(user);
                 break;
             case 12:
-                incomes = incomeService.getAllIncomesForLastYear();
+                incomes = incomeService.getAllIncomesForLastYear(user);
                 break;
 
 
@@ -148,20 +148,20 @@ public class ChartService {
 
 
     }
-    public JFreeChart createIncomeChart(int period) {
+    public JFreeChart createIncomeChart(int period, UserAccount user) {
         List<Income> incomes = null;
         switch (period){
             case 0:
-                incomes = incomeService.getAllIncomes();
+                incomes = incomeService.getUserIncomes(user);
                 break;
             case 1:
-                incomes = incomeService.getAllIncomesForLastMonth();
+                incomes = incomeService.getAllIncomesForLastMonth(user);
                 break;
             case 3:
-                incomes = incomeService.getAllIncomesForLast3Months();
+                incomes = incomeService.getAllIncomesForLast3Months(user);
                 break;
             case 12:
-                incomes = incomeService.getAllIncomesForLastYear();
+                incomes = incomeService.getAllIncomesForLastYear(user);
                 break;
 
 
@@ -184,20 +184,20 @@ public class ChartService {
         return chart;
     }
 
-    public JFreeChart createBalanceChart(int period){
+    public JFreeChart createBalanceChart(int period, UserAccount user){
         Balance balance = null;
         switch (period){
             case 0:
-                balance = balanceService.calculateBalance();
+                balance = balanceService.calculateBalance(user);
                 break;
             case 1:
-                balance = balanceService.calculateBalanceForLastMonth();
+                balance = balanceService.calculateBalanceForLastMonth(user);
                 break;
             case 3:
-                balance = balanceService.calculateBalanceForLast3Months();
+                balance = balanceService.calculateBalanceForLast3Months(user);
                 break;
             case 12:
-                balance = balanceService.calculateBalanceForLastYear();
+                balance = balanceService.calculateBalanceForLastYear(user);
                 break;
 
         }

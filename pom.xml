@@ -14,7 +14,9 @@
 	<name>personal_finance_accounting</name>
 	<description>diploma project</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -77,11 +79,7 @@
 			<version>0.58</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.springboot.ai/spring-ai-openai -->
-		<dependency>
-			<groupId>io.springboot.ai</groupId>
-			<artifactId>spring-ai-openai</artifactId>
-			<version>1.0.3</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
@@ -100,8 +98,14 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
+
 
 	<build>
 		<plugins>

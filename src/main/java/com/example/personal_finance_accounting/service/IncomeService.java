@@ -27,7 +27,7 @@ public class IncomeService {
     private IncomeRepository incomeRepository;
 
     public List<Income> getUserIncomes(UserAccount userAccount) {
-        return incomeRepository.findByUserAccount(userAccount);
+        return incomeRepository.findAllIncomesByUserAccount(userAccount);
     }
 
 
@@ -35,11 +35,15 @@ public class IncomeService {
         return incomeRepository.findAll();
     }
 
+
     public Income addIncome(String amount, String source, Date date, UserAccount userAccount) {
 
         Income newIncome = new Income();
         newIncome.setAmount(BigDecimal.valueOf(Long.parseLong(amount)));
         newIncome.setSource(source);
+        if(date==null){
+            date = convertToDate(LocalDate.now());
+        }
         newIncome.setDate(date);
         newIncome.setUserAccount(userAccount);
         return incomeRepository.save(newIncome);
@@ -60,6 +64,10 @@ public class IncomeService {
             Income income = incomeOptional.get();
             income.setAmount(updatedIncome.getAmount());
             income.setSource(updatedIncome.getSource());
+            Date date = updatedIncome.getDate();
+            if(date==null){
+                updatedIncome.setDate(convertToDate(LocalDate.now()));
+            }
             income.setDate(updatedIncome.getDate());
             incomeRepository.save(income);
         } else {
@@ -72,7 +80,7 @@ public class IncomeService {
         calendar.add(Calendar.MONTH, -3);
         Date threeMonthsAgo = calendar.getTime();
         Date today = new Date();
-        return incomeRepository.findIncomesByDateRange(threeMonthsAgo, today);
+        return incomeRepository.findIncomesByDateRangeUser(threeMonthsAgo, today, userAccount);
     }
 
     public List<Income> getAllIncomesForLastYear(UserAccount userAccount) {
@@ -80,7 +88,7 @@ public class IncomeService {
         calendar.add(Calendar.YEAR, -1);
         Date oneYearAgo = calendar.getTime();
         Date today = new Date();
-        return incomeRepository.findIncomesByDateRange(oneYearAgo, today);
+        return incomeRepository.findIncomesByDateRangeUser(oneYearAgo, today, userAccount);
     }
 
     public List<Income> getAllIncomesForLastMonth(UserAccount userAccount) {
@@ -88,7 +96,7 @@ public class IncomeService {
         calendar.add(Calendar.MONTH, -1);
         Date oneMonthAgo = calendar.getTime();
         Date today = new Date();
-        return incomeRepository.findIncomesByDateRange(oneMonthAgo, today);
+        return incomeRepository.findIncomesByDateRangeUser(oneMonthAgo, today, userAccount);
     }
 
 

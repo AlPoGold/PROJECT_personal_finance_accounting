@@ -32,6 +32,9 @@ public class ExpenseService {
     }
 
     public Expense addExpense(String amount, String category, Date date, UserAccount userAccount) {
+        if(date==null){
+            date = convertToDate(LocalDate.now());
+        }
         Expense newExpense = new Expense();
         newExpense.setAmount(BigDecimal.valueOf(Long.parseLong(amount)));
         newExpense.setCategory(category);
@@ -54,6 +57,9 @@ public class ExpenseService {
     public void updateById(Long id, Expense updatedExpense) {
         Optional<Expense> expenseOptional = expenseRepository.findById(id);
         if (expenseOptional.isPresent()) {
+            if(updatedExpense.getDate()==null){
+                updatedExpense.setDate(convertToDate(LocalDate.now()));
+            }
             Expense expense = expenseOptional.get();
             expense.setAmount(updatedExpense.getAmount());
             expense.setCategory(updatedExpense.getCategory());
@@ -64,28 +70,28 @@ public class ExpenseService {
         }
     }
 
-    public List<Expense> getAllExpensesForLast3Months() {
+    public List<Expense> getAllExpensesForLast3Months(UserAccount user) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -3);
         Date threeMonthsAgo = calendar.getTime();
         Date today = new Date();
-        return expenseRepository.findExpensesByDateRange(threeMonthsAgo, today);
+        return expenseRepository.findExpenseByDateRangeUser(threeMonthsAgo, today, user);
     }
 
-    public List<Expense> getAllExpensesForLastYear() {
+    public List<Expense> getAllExpensesForLastYear(UserAccount user) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -1);
         Date oneYearAgo = calendar.getTime();
         Date today = new Date();
-        return expenseRepository.findExpensesByDateRange(oneYearAgo, today);
+        return expenseRepository.findExpenseByDateRangeUser(oneYearAgo, today, user);
     }
 
-    public List<Expense> getAllExpensesForLastMonth() {
+    public List<Expense> getAllExpensesForLastMonth(UserAccount user) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
         Date oneMonthAgo = calendar.getTime();
         Date today = new Date();
-        return expenseRepository.findExpensesByDateRange(oneMonthAgo, today);
+        return expenseRepository.findExpenseByDateRangeUser(oneMonthAgo, today, user);
     }
 
     public void initialRepo(UserAccount userAccount) {
@@ -97,5 +103,9 @@ public class ExpenseService {
     private static Date convertToDate(LocalDate localDate) {
         Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
+    }
+
+    public List<Expense> findByUserAccount(UserAccount userAccount) {
+        return expenseRepository.findByUserAccount(userAccount);
     }
 }

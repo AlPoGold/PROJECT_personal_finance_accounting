@@ -35,7 +35,7 @@
   </div>
   <div class="main">
     <h1>Goals</h1>
-    <table class="table">
+    <table th:if="${listGoals != null and !listGoals.isEmpty()}" class="table">
       <thead>
       <tr>
         <th scope="col">Id</th>
@@ -72,20 +72,23 @@
         </td>
       </tbody>
     </table>
+    <div th:if="${listGoals == null or listGoals.isEmpty()}">
+      <p>No goals available.</p>
+    </div>
     <div class ="add_form">
       <h2>Add your goal:</h2>
       <div class="mb-3">
         <form action="/goals" method="post">
           <label class="form-label">Description of goal</label>
-          <input type="text" name="name"class="form-control"  placeholder="gift for myself">
+          <input type="text" name="name"class="form-control"  placeholder="gift for myself" required>
           <label class="form-label">Target amount</label>
-          <input type="text" name="targetAmount" class="form-control"  placeholder="1000">
+          <input type="text" name="targetAmount" class="form-control"  placeholder="1000" required>
           <label class="form-label">Start date</label>
-          <input type="date" name ="startDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_start" placeholder="Выберите дату">
+          <input type="date" name ="startDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_start" placeholder="Выберите дату" required>
           <label class="form-label">End date</label>
-          <input type="date" name="endDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_end" placeholder="Выберите дату">
+          <input type="date" name="endDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_end" placeholder="Выберите дату" required>
           <label class="form-label">Status</label>
-          <select name="status" class="form-control">
+          <select name="status" class="form-control" required>
             <option value="NOT_STARTED">NOT_STARTED</option>
             <option value="IN_PROGRESS">IN_PROGRESS</option>
             <option value="PAUSED">PAUSED</option>
@@ -103,6 +106,8 @@
     <div class="danger-zone">
       <h3>Danger Zone</h3>
       <button class="btn btn-danger" onclick="deleteAllRecords()">Delete All Records</button>
+      <button class="btn btn-warning" onclick="logout()">LOGOUT</button>
+      <button class="btn btn-success" onclick="deleteUser()">DELETE USER</button>
     </div>
   </div>
 </div>
@@ -110,17 +115,17 @@
   <form id="editForm" method="post">
     <input type="hidden" id="editId" name="id">
     <label for="editName">Description of goal:</label>
-    <input type="text" id="editName" name="name" class="form-control">
+    <input type="text" id="editName" name="name" class="form-control" required>
     <label for="editTargetAmount">Target amount:</label>
-    <input type="text" id="editTargetAmount" name="targetAmount" class="form-control">
+    <input type="text" id="editTargetAmount" name="targetAmount" class="form-control" required>
     <label for="editCurrentAmount">Current amount:</label>
-    <input type="text" id="editCurrentAmount" name="currentAmount" class="form-control">
+    <input type="text" id="editCurrentAmount" name="currentAmount" class="form-control" required>
     <label for="editStartDate">Start date:</label>
-    <input type="date" id="editStartDate" name="startDate" class="form-control">
+    <input type="date" id="editStartDate" name="startDate" class="form-control" required>
     <label for="editEndDate">End date:</label>
-    <input type="date" id="editEndDate" name="endDate" class="form-control">
+    <input type="date" id="editEndDate" name="endDate" class="form-control" required>
     <label for="editStatus">Status:</label>
-    <select id="editStatus" name="status" class="form-control">
+    <select id="editStatus" name="status" class="form-control" required>
       <option value="NOT_STARTED">NOT_STARTED</option>
       <option value="IN_PROGRESS">IN_PROGRESS</option>
       <option value="PAUSED">PAUSED</option>
@@ -132,6 +137,7 @@
 </dialog>
 </body>
 <script th:inline="javascript">
+  var userId = [[${userId}]];
 function openEditModal(element) {
     var id = element.getAttribute('data-id');
     var name = element.getAttribute('data-name');
@@ -150,6 +156,17 @@ function openEditModal(element) {
     document.getElementById('editStatus').value = status;
 
     document.getElementById('editGoal').showModal();
+}
+function validateForm() {
+  var form = document.getElementById('addGoalForm');
+  var inputs = form.querySelectorAll('input[required], select[required]');
+  for (var i = 0; i < inputs.length; i++) {
+    if (!inputs[i].value) {
+      alert('Please fill out all required fields.');
+      return false;
+    }
+  }
+  return true;
 }
 
 function closeEditModal() {
@@ -192,7 +209,7 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
 
 function deleteAllRecords() {
   if (confirm('Are you sure you want to delete all records from all tables? This action cannot be undone.')) {
-    fetch('/deleteAll', {
+    fetch('index/deleteAll', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -201,6 +218,7 @@ function deleteAllRecords() {
             .then(response => {
               if (response.ok) {
                 alert('All records have been successfully deleted.');
+                window.location.reload();
               } else {
                 alert('An error occurred while deleting records.');
               }
@@ -208,6 +226,33 @@ function deleteAllRecords() {
             .catch(error => {
               console.error('Error:', error);
               alert('An error occurred while deleting records.');
+            });
+  }
+}
+function logout() {
+  fetch('/logout', { method: 'POST' })
+          .then(response => {
+            if (response.ok) {
+              window.location.href = '/login?logout';
+            } else {
+              console.error('Logout failed');
+            }
+          })
+          .catch(error => console.error('Error:', error));
+}
+function deleteUser() {
+  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    fetch('index/user/delete/' +userId, { method: 'DELETE' })
+            .then(response => {
+              if (response.ok) {
+                return logout();
+              } else {
+                alert('An error occurred while deleting the user.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while deleting the user.');
             });
   }
 }

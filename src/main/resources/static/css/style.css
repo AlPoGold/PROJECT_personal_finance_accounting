@@ -86,5 +86,30 @@
   display: none;
 }
 
+.danger-zone {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.danger-zone button {
+    width: 100%;
+    max-width: 300px; /* Adjust the max-width as needed */
+    margin-bottom: 10px;
+}
+
+.user_info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.user_info img{
+    max-width: 300px;
+    max-height: 300px;
+}
+
 
 

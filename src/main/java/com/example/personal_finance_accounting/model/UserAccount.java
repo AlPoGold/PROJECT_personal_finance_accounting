@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,7 +25,18 @@ public class UserAccount {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "city")
+    private String city;
+
+    @Column(name="birth_date")
+    private Date birthDate;
+
+
+
     private UserRoleEnum role = UserRoleEnum.USER_ROLE;
+    private String photoProfile = "/static/img/profile-picture.png";
+
+
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Balance> balances = new ArrayList<>();
 

@@ -46,12 +46,19 @@ public class GoalService {
 
     public Goal addGoal(String name, Double targetAmount, LocalDate startDate, LocalDate endDate,
                         GoalStatusEnum status, UserAccount userAccount) {
+        if(startDate==null){
+            startDate=LocalDate.now();
+        }
+        if(endDate==null){
+            endDate=LocalDate.now();
+        }
         Goal goal = new Goal();
         goal.setName(name);
         goal.setTargetAmount(targetAmount);
         goal.setStartDate(startDate);
         goal.setEndDate(endDate);
         goal.setStatus(status);
+        goal.setUserAccount(userAccount);
 
         goalRepository.save(goal);
 
@@ -97,8 +104,17 @@ public class GoalService {
             existingGoal.setName(updatedGoal.getName());
             existingGoal.setTargetAmount(updatedGoal.getTargetAmount());
             existingGoal.setCurrentAmount(updatedGoal.getCurrentAmount());
-            existingGoal.setStartDate(updatedGoal.getStartDate());
-            existingGoal.setEndDate(updatedGoal.getEndDate());
+
+            LocalDate startDate = updatedGoal.getStartDate();
+            LocalDate endDate = updatedGoal.getEndDate();
+            if(startDate==null){
+                startDate=LocalDate.now();
+            }
+            if(endDate==null){
+                endDate=LocalDate.now();
+            }
+            existingGoal.setStartDate(startDate);
+            existingGoal.setEndDate(endDate);
             existingGoal.setStatus(updatedGoal.getStatus());
             goalRepository.save(existingGoal);
         } else {
@@ -107,9 +123,7 @@ public class GoalService {
 
     }
     private static Date convertToDate(LocalDate localDate) {
-        // Преобразование LocalDate в Instant
         Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        // Преобразование Instant в Date
         return Date.from(instant);
     }
 
@@ -122,5 +136,9 @@ public class GoalService {
 
         goalRepository.save(goal);
 
+    }
+
+    public List<Goal> findByUserAccount(UserAccount userAccount) {
+        return goalRepository.findByUserAccount(userAccount);
     }
 }
