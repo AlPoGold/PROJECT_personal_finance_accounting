@@ -22,6 +22,11 @@ import java.util.Optional;
 public class ExpenseService {
     private ExpenseRepository expenseRepository;
 
+    /**
+     * получаем список всех расходов
+     *
+     * @param userAccount учетная запись пользователя, который прошел авторизации.
+     */
     public List<Expense> getUserExpenses(UserAccount userAccount) {
         return expenseRepository.findByUserAccount(userAccount);
     }
@@ -45,6 +50,11 @@ public class ExpenseService {
 
     }
 
+    /**
+     * Удаляет расход по идентификатору.
+     *
+     * @param id Идентификатор расхода.
+     */
     public void deleteById(Long id) {
         expenseRepository.deleteById(id);
     }

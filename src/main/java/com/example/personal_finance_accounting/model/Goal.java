@@ -17,13 +17,6 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "userId", nullable = true) //nullable sets to true so corresponding user account can be deleted despite FK constraint
-//    private UserAccount userAccount;
-
-//    @ManyToOne
-//    @JoinColumn(name = "balanceId")
-//    private Balance balance;
 
     @Column(name = "name")
     private String name;
@@ -45,6 +38,6 @@ public class Goal {
     private GoalStatusEnum status = GoalStatusEnum.NOT_STARTED;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = true) //nullable sets to true so corresponding user account can be deleted despite FK constraint
+    @JoinColumn(name = "userId",  nullable = true)
     private UserAccount userAccount;
 }

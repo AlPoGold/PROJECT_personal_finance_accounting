@@ -44,9 +44,10 @@ public class UserAccountService {
         return userAccount.orElseThrow(() -> new RuntimeException("User account not found for id :: " + id));
     }
 
+
     // Update a user account
     public UserAccount updateUserAccount(Long id, UserAccount userAccountDetails) {
-        UserAccount userAccount = getUserAccountById(id); // Reuse getUserAccountById to ensure the user account exists
+        UserAccount userAccount = getUserAccountById(id);
 
         userAccount.setUsername(userAccountDetails.getUsername());
         userAccount.setEmail(userAccountDetails.getEmail());
@@ -55,7 +56,6 @@ public class UserAccountService {
         return userRepository.save(userAccount);
     }
 
-    // Delete a user account
     public void deleteUserAccount(Long id) {
         UserAccount userAccount = getUserAccountById(id); // Reuse getUserAccountById to ensure the user account exists
         userRepository.delete(userAccount);

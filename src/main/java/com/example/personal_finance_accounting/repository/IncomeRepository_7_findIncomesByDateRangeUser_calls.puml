@@ -1,0 +1,213 @@
+@startuml
+
+/' diagram meta data start
+config=CallConfiguration;
+{
+  "rootMethod": "com.example.personal_finance_accounting.repository.IncomeRepository#findIncomesByDateRangeUser(Date,Date,UserAccount)",
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showMethodParametersTypes": false,
+    "showMethodParametersNames": false,
+    "showMethodReturnType": false,
+    "showPackageLevels": 2,
+    "showCallOrder": false,
+    "edgeMode": "MethodsOnly", // TypesOnly, MethodsOnly, TypesAndMethods, MethodsAndDirectTypeUsage
+    "showDetailedClassStructure": false
+  },
+  "rootClass": "com.example.personal_finance_accounting.repository.IncomeRepository",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="LR"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1425356277 { 
+   	label=personal_finance_accounting
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_130921523 { 
+   	label=IncomeService
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   IncomeService1999190735XXXgetAllIncomesForLast3Months188683202[
+	label="+ getAllIncomesForLast3Months()"
+	style=filled
+	fillcolor=white
+	tooltip="IncomeService
+
+null"
+	fontcolor=darkgreen
+];
+
+IncomeService1999190735XXXgetAllIncomesForLastMonth188683202[
+	label="+ getAllIncomesForLastMonth()"
+	style=filled
+	fillcolor=white
+	tooltip="IncomeService
+
+null"
+	fontcolor=darkgreen
+];
+
+IncomeService1999190735XXXgetAllIncomesForLastYear188683202[
+	label="+ getAllIncomesForLastYear()"
+	style=filled
+	fillcolor=white
+	tooltip="IncomeService
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_1864864434 { 
+   	label=ChartController
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ChartController1941979458XXXshowIncomeChart56750613[
+	label="+ showIncomeChart()"
+	style=filled
+	fillcolor=white
+	tooltip="ChartController
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_213967402 { 
+   	label=ChartService
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ChartService1999190735XXXcreateIncomeChart2039734847[
+	label="+ createIncomeChart()"
+	style=filled
+	fillcolor=white
+	tooltip="ChartService
+
+null"
+	fontcolor=darkgreen
+];
+
+ChartService1999190735XXXcreateIncomeChartHystogramm2039734847[
+	label="+ createIncomeChartHystogramm()"
+	style=filled
+	fillcolor=white
+	tooltip="ChartService
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_751597775 { 
+   	label=IncomeRepository
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   IncomeRepository1039615760XXXfindIncomesByDateRangeUser1792010046[
+	label="+ findIncomesByDateRangeUser()"
+	style=filled
+	fillcolor=white
+	tooltip="IncomeRepository
+
+null"
+	penwidth=4
+	fontcolor=darkgreen
+];
+} 
+} 
+} 
+
+'edges    
+ChartController1941979458XXXshowIncomeChart56750613 -> ChartService1999190735XXXcreateIncomeChartHystogramm2039734847;
+ChartService1999190735XXXcreateIncomeChart2039734847 -> IncomeService1999190735XXXgetAllIncomesForLast3Months188683202;
+ChartService1999190735XXXcreateIncomeChart2039734847 -> IncomeService1999190735XXXgetAllIncomesForLastMonth188683202;
+ChartService1999190735XXXcreateIncomeChart2039734847 -> IncomeService1999190735XXXgetAllIncomesForLastYear188683202;
+ChartService1999190735XXXcreateIncomeChartHystogramm2039734847 -> IncomeService1999190735XXXgetAllIncomesForLast3Months188683202;
+ChartService1999190735XXXcreateIncomeChartHystogramm2039734847 -> IncomeService1999190735XXXgetAllIncomesForLastMonth188683202;
+ChartService1999190735XXXcreateIncomeChartHystogramm2039734847 -> IncomeService1999190735XXXgetAllIncomesForLastYear188683202;
+IncomeService1999190735XXXgetAllIncomesForLast3Months188683202 -> IncomeRepository1039615760XXXfindIncomesByDateRangeUser1792010046;
+IncomeService1999190735XXXgetAllIncomesForLastMonth188683202 -> IncomeRepository1039615760XXXfindIncomesByDateRangeUser1792010046;
+IncomeService1999190735XXXgetAllIncomesForLastYear188683202 -> IncomeRepository1039615760XXXfindIncomesByDateRangeUser1792010046;
+    
+}
+@enduml

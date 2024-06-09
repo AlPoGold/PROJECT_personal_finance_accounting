@@ -18,7 +18,6 @@ public class Balance {
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private UserAccount userAccount;
-
     private BigDecimal totalIncome;
     private BigDecimal totalExpense;
     private BigDecimal totalBalance;

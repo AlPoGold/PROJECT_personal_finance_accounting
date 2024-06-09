@@ -31,43 +31,14 @@ public class ChartService {
 
 
 
-    public JFreeChart createExpenseChart(UserAccount userAccount, int period) {
-        List<Expense> expences = null;
-        switch (period){
-            case 0:
-                expences = expenseService.findByUserAccount(userAccount);
-                break;
-            case 1:
-                expences = expenseService.getAllExpensesForLastMonth(userAccount);
-                break;
-            case 3:
-                expences = expenseService.getAllExpensesForLast3Months(userAccount);
-                break;
-            case 12:
-                expences = expenseService.getAllExpensesForLastYear(userAccount);
-                break;
 
-
-        }
-
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        assert expences != null;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        for (Expense expense:expences) {
-            String formattedDate = formatter.format(expense.getDate());
-            dataset.addValue(expense.getAmount(), "Expense", formattedDate );
-        }
-        JFreeChart chart = ChartFactory.createLineChart(
-                "ExpenseTime",  // заголовок
-                "Date",              // ось X
-                "Amount",            // ось Y
-                dataset             // набор данных
-        );
-
-        createImage(chart, period);
-
-        return chart;
-    }
+    /**
+     * Получает статистику расходов.
+     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
+     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     *
+     * @return объект ChartData, представляющих данные о расходах в виде гистограммы.
+     */
     public JFreeChart createExpenseChartHystogramm(int period, UserAccount user) {
         List<Expense> expences = null;
         switch (period){
@@ -109,6 +80,13 @@ public class ChartService {
         return chart;
     }
 
+    /**
+     * Получает статистику доходов.
+     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
+     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     *
+     * @return объект ChartData, представляющих данные о доходах в виде гистограммы.
+     */
     public JFreeChart createIncomeChartHystogramm(int period, UserAccount user){
         List<Income> incomes = null;
         switch (period){
@@ -148,42 +126,15 @@ public class ChartService {
 
 
     }
-    public JFreeChart createIncomeChart(int period, UserAccount user) {
-        List<Income> incomes = null;
-        switch (period){
-            case 0:
-                incomes = incomeService.getUserIncomes(user);
-                break;
-            case 1:
-                incomes = incomeService.getAllIncomesForLastMonth(user);
-                break;
-            case 3:
-                incomes = incomeService.getAllIncomesForLast3Months(user);
-                break;
-            case 12:
-                incomes = incomeService.getAllIncomesForLastYear(user);
-                break;
 
 
-        }
-
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        assert incomes != null;
-        for (Income income: incomes) {
-            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
-        }
-        JFreeChart chart = ChartFactory.createLineChart(
-                "IncomeTime",  // заголовок
-                "Date",              // ось X
-                "Amount",            // ось Y
-                dataset             // набор данных
-        );
-
-        createImage(chart, period);
-
-        return chart;
-    }
-
+    /**
+     * Получает статистику по соотношению доходов и расходов.
+     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
+     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     *
+     * @return  объект ChartData, представляющий данные о соотношении в виде круговой диаграммы.
+     */
     public JFreeChart createBalanceChart(int period, UserAccount user){
         Balance balance = null;
         switch (period){
@@ -219,6 +170,14 @@ public class ChartService {
     }
 
 
+    /**
+     * Получает изображение графика и сохраняет в папке src/main/resources/static/img/.
+     * @param chart объект ChartData,который генерируется за счет библиотеки JFreeChart
+     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
+     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     *
+     * @return  запись изображения в папку.
+     */
     public void createImage(JFreeChart chart, int period){
         BufferedImage imageIncome = chart.createBufferedImage(800, 800);
         File outputFileIncome = new File("src/main/resources/static/img/" + chart.getTitle().getText() + period + ".png");
@@ -227,6 +186,81 @@ public class ChartService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Deprecated
+    public JFreeChart createExpenseChart(UserAccount userAccount, int period) {
+        List<Expense> expences = null;
+        switch (period){
+            case 0:
+                expences = expenseService.findByUserAccount(userAccount);
+                break;
+            case 1:
+                expences = expenseService.getAllExpensesForLastMonth(userAccount);
+                break;
+            case 3:
+                expences = expenseService.getAllExpensesForLast3Months(userAccount);
+                break;
+            case 12:
+                expences = expenseService.getAllExpensesForLastYear(userAccount);
+                break;
+
+
+        }
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        assert expences != null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        for (Expense expense:expences) {
+            String formattedDate = formatter.format(expense.getDate());
+            dataset.addValue(expense.getAmount(), "Expense", formattedDate );
+        }
+        JFreeChart chart = ChartFactory.createLineChart(
+                "ExpenseTime",  // заголовок
+                "Date",              // ось X
+                "Amount",            // ось Y
+                dataset             // набор данных
+        );
+
+        createImage(chart, period);
+
+        return chart;
+    }
+    @Deprecated
+    public JFreeChart createIncomeChart(int period, UserAccount user) {
+        List<Income> incomes = null;
+        switch (period){
+            case 0:
+                incomes = incomeService.getUserIncomes(user);
+                break;
+            case 1:
+                incomes = incomeService.getAllIncomesForLastMonth(user);
+                break;
+            case 3:
+                incomes = incomeService.getAllIncomesForLast3Months(user);
+                break;
+            case 12:
+                incomes = incomeService.getAllIncomesForLastYear(user);
+                break;
+
+
+        }
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        assert incomes != null;
+        for (Income income: incomes) {
+            dataset.addValue(income.getAmount(), "Income", income.getDate().toString());
+        }
+        JFreeChart chart = ChartFactory.createLineChart(
+                "IncomeTime",  // заголовок
+                "Date",              // ось X
+                "Amount",            // ось Y
+                dataset             // набор данных
+        );
+
+        createImage(chart, period);
+
+        return chart;
     }
 
 

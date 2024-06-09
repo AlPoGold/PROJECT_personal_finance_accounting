@@ -21,7 +21,6 @@ public class UserRegisteredListener implements ApplicationListener<UserRegistere
     @Override
     public void onApplicationEvent(UserRegisteredEvent event) {
         UserAccount userAccount = event.getUserAccount();
-        // Создание записи в таблице балансов
         expenseService.initialRepo(userAccount);
         log.log(Level.INFO, "create expense repo");
         incomeService.initialRepo(userAccount);

@@ -31,6 +31,12 @@ public class BalanceController {
     private BalanceService balanceService;
     private UserAccountService userAccountService;
 
+    /**
+     * Отображает страницу баланса с данными о доходах, расходах и общем балансе пользователя.
+     *
+     * @param model Модель для передачи данных в шаблон.
+     * @return Имя представления для отображения страницы.
+     */
     @GetMapping
     public String getBalance(Model model, Authentication authentication) {
         UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
@@ -49,6 +55,13 @@ public class BalanceController {
     }
 
 
+    /**
+     * Метод для загрузки изображения пользователя.
+     *
+     * @param model Модель для передачи данных в шаблон.
+     * @param file загружаемый пользователем файл
+     * @return Имя представления для отображения страницы.
+     */
     @PostMapping("/uploadProfilePhoto")
     public String uploadProfilePhoto(@RequestParam("profilePhoto") MultipartFile file, Model model, Authentication authentication) {
         if (file.isEmpty()) {
@@ -107,9 +120,6 @@ public class BalanceController {
         }
 
     }
-
-
-
 
 
 

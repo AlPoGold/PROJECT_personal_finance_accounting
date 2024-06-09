@@ -42,10 +42,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     List<Income> findIncomesByDateRangeUser(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userAccount") UserAccount userAccount);
 
 
-//    @Modifying
-//    @Transactional
-//    @Query("UPDATE Income i SET i.amount = :amount, i.source = :source, i.date = :date WHERE i.id = :id AND i.userAccount = :userAccount")
-//    void updateByIdAndUserAccount(@Param("id") Long id, @Param("amount") BigDecimal amount, @Param("source") String source, @Param("date") Date date, @Param("userAccount") UserAccount userAccount);
+
 
 
 }

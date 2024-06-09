@@ -9,7 +9,6 @@ public class ChatClientConfig {
 
     @Bean
     public RestTemplate getRestTemplate() {
-
         return new RestTemplate();
     }
 }

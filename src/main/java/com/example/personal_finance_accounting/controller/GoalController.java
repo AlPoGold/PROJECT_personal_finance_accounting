@@ -29,6 +29,12 @@ public class GoalController {
     private GoalService goalService;
     private UserAccountService userAccountService;
 
+    /**
+     * Отображает страницу с целями.
+     *
+     * @param model Модель для передачи данных в шаблон.
+     * @return Имя представления для отображения страницы.
+     */
     @GetMapping("/goals")
     public String getGoals(Model model, Authentication authentication){
         UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
@@ -38,6 +44,12 @@ public class GoalController {
         return "goals";
     }
 
+    /**
+     * Добавляет новую цель.
+     *
+     * @param goal Новая цель.
+     * @return Перенаправление на страницу с целями.
+     */
     @PostMapping("/goals")
     public String addGoal(@RequestParam("name") String name,
                           @RequestParam("targetAmount") Double targetAmount,
@@ -53,16 +65,23 @@ public class GoalController {
 
         return "redirect:/goals";
     }
+
+
     @PutMapping("/goals/{id}")
     public ResponseEntity<Goal> sendMoneyToGoal(@PathVariable Long id, @RequestParam("amount") Double amount){
         log.log(Level.INFO, amount + " was sent to your goal!");
         goalService.increaseMoneyGoalById(id, amount);
         Goal goal = goalService.getGoalById(id).orElse(null);
-
-
         return ResponseEntity.ok(goal);
     }
 
+    /**
+     * Обновляет существующую цель.
+     *
+     * @param id Идентификатор цели.
+     * @param updatedGoal Обновленная цель.
+     * @return Перенаправление на страницу с целями.
+     */
     @PutMapping("/goals/update/{id}")
     public ResponseEntity<String> updateGoal(@PathVariable("id") Long id, @RequestBody Goal updatedGoal) {
         Optional<Goal> existingGoalOptional = goalService.findById(id);
@@ -73,6 +92,12 @@ public class GoalController {
         return ResponseEntity.ok("Goal updated successfully");
     }
 
+    /**
+     * Удаляет цель по идентификатору.
+     *
+     * @param id Идентификатор цели.
+     * @return Перенаправление на страницу с целями.
+     */
     @GetMapping("goals/delete/{id}")
     public String deleteGoal(@PathVariable Long id) {
         goalService.deleteGoal(id);

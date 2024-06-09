@@ -1,8 +1,4 @@
 FROM maven:3.8.4-openjdk-17 as builder
-WORKDIR /app
-COPY . /app/.
-RUN mvn -f /app/pom.xml clean package -Dmaven.test.skip=true
-
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-COPY --from=builder /app/target/*.jar /app/
+ARG WAR_FILE=personal_finance_accounting-0.0.1-SNAPSHOT.war
+COPY ${WAR_FILE} app.war
+ENTRYPOINT ["java", "-jar", "app.war"]

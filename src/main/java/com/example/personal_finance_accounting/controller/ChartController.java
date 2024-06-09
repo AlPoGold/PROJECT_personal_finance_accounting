@@ -20,7 +20,12 @@ public class ChartController {
     private final ChartService chartService;
     private final UserAccountService userAccountService;
 
-
+    /**
+     * Отображает страницу с графиками доходов, расходов и баланса.
+     *
+     * @param model Модель для передачи данных в шаблон.
+     * @return Имя представления для отображения страницы.
+     */
     @GetMapping("/charts")
     public String showIncomeChart(Model model, Authentication auth){
         UserAccount userAccount = userAccountService.findByEmail(auth.getName());
@@ -51,7 +56,6 @@ public class ChartController {
         model.addAttribute("expenses3month", chartExpense3Months );
         model.addAttribute("expenselastmonth", chartExpenseLastMonth);
         model.addAttribute("expenselastyear", chartExpenseLastYear );
-
 
 
         //BALANCE

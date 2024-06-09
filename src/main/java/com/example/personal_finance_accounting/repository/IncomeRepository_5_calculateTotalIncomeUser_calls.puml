@@ -1,0 +1,235 @@
+@startuml
+
+/' diagram meta data start
+config=CallConfiguration;
+{
+  "rootMethod": "com.example.personal_finance_accounting.repository.IncomeRepository#calculateTotalIncomeUser(UserAccount)",
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showMethodParametersTypes": false,
+    "showMethodParametersNames": false,
+    "showMethodReturnType": false,
+    "showPackageLevels": 2,
+    "showCallOrder": false,
+    "edgeMode": "MethodsOnly", // TypesOnly, MethodsOnly, TypesAndMethods, MethodsAndDirectTypeUsage
+    "showDetailedClassStructure": false
+  },
+  "rootClass": "com.example.personal_finance_accounting.repository.IncomeRepository",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="LR"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1425356277 { 
+   	label=personal_finance_accounting
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_1309265196 { 
+   	label=UserRegisteredListener
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   UserRegisteredListener365187645XXXonApplicationEvent1019721267[
+	label="+ onApplicationEvent()"
+	style=filled
+	fillcolor=white
+	tooltip="UserRegisteredListener
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_1864864434 { 
+   	label=ChartController
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ChartController1941979458XXXshowIncomeChart56750613[
+	label="+ showIncomeChart()"
+	style=filled
+	fillcolor=white
+	tooltip="ChartController
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_213967402 { 
+   	label=ChartService
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ChartService1999190735XXXcreateBalanceChart2039734847[
+	label="+ createBalanceChart()"
+	style=filled
+	fillcolor=white
+	tooltip="ChartService
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_751597775 { 
+   	label=IncomeRepository
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   IncomeRepository1039615760XXXcalculateTotalIncomeUser188683202[
+	label="+ calculateTotalIncomeUser()"
+	style=filled
+	fillcolor=white
+	tooltip="IncomeRepository
+
+null"
+	penwidth=4
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_807440728 { 
+   	label=BalanceService
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   BalanceService1999190735XXXaddBalance188683202[
+	label="+ addBalance()"
+	style=filled
+	fillcolor=white
+	tooltip="BalanceService
+
+null"
+	fontcolor=darkgreen
+];
+
+BalanceService1999190735XXXcalculateBalance188683202[
+	label="+ calculateBalance()"
+	style=filled
+	fillcolor=white
+	tooltip="BalanceService
+
+null"
+	fontcolor=darkgreen
+];
+
+BalanceService1999190735XXXgetUserBalance188683202[
+	label="+ getUserBalance()"
+	style=filled
+	fillcolor=white
+	tooltip="BalanceService
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_829088204 { 
+   	label=BalanceController
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   BalanceController1941979458XXXgetBalance56750613[
+	label="+ getBalance()"
+	style=filled
+	fillcolor=white
+	tooltip="BalanceController
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+} 
+
+'edges    
+BalanceController1941979458XXXgetBalance56750613 -> BalanceService1999190735XXXgetUserBalance188683202;
+BalanceService1999190735XXXaddBalance188683202 -> BalanceService1999190735XXXcalculateBalance188683202;
+BalanceService1999190735XXXcalculateBalance188683202 -> IncomeRepository1039615760XXXcalculateTotalIncomeUser188683202;
+BalanceService1999190735XXXgetUserBalance188683202 -> IncomeRepository1039615760XXXcalculateTotalIncomeUser188683202;
+ChartController1941979458XXXshowIncomeChart56750613 -> ChartService1999190735XXXcreateBalanceChart2039734847;
+ChartService1999190735XXXcreateBalanceChart2039734847 -> BalanceService1999190735XXXcalculateBalance188683202;
+UserRegisteredListener365187645XXXonApplicationEvent1019721267 -> BalanceService1999190735XXXaddBalance188683202;
+UserRegisteredListener365187645XXXonApplicationEvent1019721267 -> BalanceService1999190735XXXgetUserBalance188683202;
+    
+}
+@enduml

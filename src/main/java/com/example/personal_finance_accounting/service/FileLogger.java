@@ -13,7 +13,14 @@ public class FileLogger {
 
 
 
-    public static void log(UserAccount user, String message) {
+    /**
+     * Логгирует сообщение в файл.
+     *
+     * @param message Сообщение для логирования.
+     * @param user пользователь, с учетной записи которого прошла авторизация
+     *
+     */
+     public static void log(UserAccount user, String message) {
         String FILE_PATH = FILE_PATH_WITHOUT_USER + user.getEmail() + "log.txt";
         StringBuilder sb = new StringBuilder();
         sb.append(LocalDate.now()).append("|").append(message);
@@ -35,6 +42,13 @@ public class FileLogger {
         }
     }
 
+    /**
+     * Читает сообщения в файл.
+     *
+
+     * @param user пользователь, с учетной записи которого прошла авторизация
+     * @return список записей в файле лога, доступного для этого пользователя
+     */
     public static List<String> readLogs(UserAccount user){
         List<String> logEntries = new ArrayList<>();
         String FILE_PATH = FILE_PATH_WITHOUT_USER + user.getEmail() + "log.txt";

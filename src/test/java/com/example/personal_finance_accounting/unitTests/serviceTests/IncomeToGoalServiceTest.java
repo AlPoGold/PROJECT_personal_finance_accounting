@@ -35,7 +35,6 @@ public class IncomeToGoalServiceTest {
 
     @Test
     void testIncreaseMoneyGoalById() {
-        // Создаем тестовые данные
         UserAccount userAccount = new UserAccount();
         Goal goal = new Goal();
         goal.setId(1L);
@@ -43,19 +42,14 @@ public class IncomeToGoalServiceTest {
         goal.setTargetAmount(1000.00);
         goal.setCurrentAmount(500.00);
 
-        // Когда findById вызывается с любым long значением, мы должны вернуть нашу цель
         when(goalRepository.findById(anyLong())).thenReturn(Optional.of(goal));
 
-        // Вызываем метод, который мы тестируем
         goalService.increaseMoneyGoalById(1L, 600.00);
 
-        // Проверяем, что текущая сумма увеличилась
         assert(goal.getCurrentAmount() == 1100.00);
 
-        // Проверяем, что статус изменился на COMPLETED
         assert(goal.getStatus() == GoalStatusEnum.COMPLETED);
 
-        // Проверяем, что метод save был вызван один раз с нашей целью
         verify(goalRepository, times(1)).save(goal);
     }
 

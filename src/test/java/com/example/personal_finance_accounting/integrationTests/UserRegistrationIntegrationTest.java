@@ -24,8 +24,6 @@ import static org.mockito.Mockito.when;
 public class UserRegistrationIntegrationTest {
     @InjectMocks
     private UserAccountService userAccountService;
-
-
     @Mock
     private UserAccountRepository userRepository;
     @Mock
@@ -38,7 +36,6 @@ public class UserRegistrationIntegrationTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-    @SuppressWarnings("unused")
     @Test
     public void testUserRegistrationCreatesInitialData() {
 
@@ -50,17 +47,8 @@ public class UserRegistrationIntegrationTest {
         newUser.setCity("testCity");
         newUser.setBirthDate(new Date(1991 - 1900, Calendar.MARCH, 21));
         userAccountService.createUserAccount(newUser);
-
-
         when(userRepository.findByEmail("test@user")).thenReturn(Optional.of(newUser));
         UserAccount foundUser = userAccountService.findByEmail("test@user");
         assertEquals(newUser.getEmail(), foundUser.getEmail());
-
-
-
-
-
-
-
     }
 }

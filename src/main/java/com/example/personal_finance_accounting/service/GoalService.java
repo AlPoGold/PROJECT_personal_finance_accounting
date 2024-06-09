@@ -31,18 +31,11 @@ public class GoalService {
         return goalRepository.findByUserAccount(userAccount);
     }
 
-    public void addGoal(Goal goal, UserAccount userAccount) {
-        goal.setUserAccount(userAccount);
-        goalRepository.save(goal);
-    }
 
     public Optional<Goal> getGoalById(Long id){
         return goalRepository.findById(id);
     }
 
-    public List<Goal> getAllGoals(){
-        return goalRepository.findAll();
-    }
 
     public Goal addGoal(String name, Double targetAmount, LocalDate startDate, LocalDate endDate,
                         GoalStatusEnum status, UserAccount userAccount) {
@@ -65,6 +58,15 @@ public class GoalService {
         return goal;
     }
 
+    /**
+     * Увеличить в записи цель поле сurrentBalance,
+     * т.е те деньги, которые зарезервированы пд определеенную цель
+     *
+
+     * @param id идентификатор цели
+     * @param amount количесто денег которые резервируются под цель
+     *
+     */
     @Transactional
     public void increaseMoneyGoalById(Long id, Double amount) {
         Optional<Goal> goalOptional = goalRepository.findById(id);

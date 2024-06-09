@@ -44,8 +44,4 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findExpenseByDateRangeUser(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userAccount") UserAccount userAccount);
 
 
-//    @Modifying
-//    @Transactional
-//    @Query("UPDATE Expense e SET e.amount = :amount, e.category = :category, e.date = :date WHERE e.id = :id AND e.userAccount = :userAccount")
-//    void updateByIdAndUserAccount(@Param("id") Long id, @Param("amount") BigDecimal amount, @Param("category") String category, @Param("date") Date date, @Param("userAccount") UserAccount userAccount);
 }

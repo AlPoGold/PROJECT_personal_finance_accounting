@@ -30,6 +30,12 @@ public class ExpenseController {
     private ExpenseService expenseService;
     private UserAccountService userAccountService;
 
+    /**
+     * Отображает страницу с расходами.
+     *
+     * @param model Модель для передачи данных в шаблон.
+     * @return Имя представления для отображения страницы.
+     */
     @GetMapping
     public String getExpenses(Model model, Authentication authentication) {
         UserAccount userAccount = userAccountService.findByEmail(authentication.getName());
@@ -49,6 +55,15 @@ public class ExpenseController {
         return "expenses";
     }
 
+    /**
+     * Добавляет новый расход.
+     *
+     * @param amount сумма расхода.
+     * @param category категория расхода.
+     * @param date дата, когда произведена оплата.
+     * @param authentication сессия пользователя.
+     * @return Перенаправление на страницу с расходами.
+     */
     @PostMapping
     public String addExpense(@RequestParam("amount") String amount,
                             @RequestParam("category") String category,
@@ -64,6 +79,12 @@ public class ExpenseController {
     }
 
 
+    /**
+     * Удаляет расход по идентификатору.
+     *
+     * @param id Идентификатор расхода.
+     * @return Перенаправление на страницу с расходами.
+     */
     @GetMapping("/delete/{id}")
     public String deleteExpense(@PathVariable("id") Long id) {
         expenseService.deleteById(id);
@@ -77,6 +98,13 @@ public class ExpenseController {
     }
 
 
+    /**
+     * Обновляет существующий расход.
+     *
+     * @param id Идентификатор расхода.
+     * @param updatedExpense Обновленный расход.
+     * @return Перенаправление на страницу с расходами.
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateExpense(@PathVariable("id") Long id, @RequestBody Expense updatedExpense) {
         Optional<Expense> existingExpenseOptional = expenseService.findById(id);

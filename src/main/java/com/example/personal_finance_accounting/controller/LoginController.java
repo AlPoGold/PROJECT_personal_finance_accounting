@@ -36,8 +36,6 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginSuccess() {
-//        UserAccount userAccount = userAccountService.findByEmail(auth.getName());
-//        request.getSession().setAttribute("currentUser", userAccount);
         return "redirect:/index";
     }
 

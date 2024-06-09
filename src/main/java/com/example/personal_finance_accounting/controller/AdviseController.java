@@ -33,6 +33,13 @@ public class AdviseController {
         return "advices";
     }
 
+
+    /**
+     * Получает совет от ИИ на основе пользовательского запроса.
+     *
+     * @param userMessage Сообщение от пользователя.
+     * @return Ответ от ИИ.
+     */
     @PostMapping
     public String handleUserMessage(@RequestParam("userMessage") String userMessage, Model model) {
         String response = openAiService.OpenAiServiceCall(userMessage);

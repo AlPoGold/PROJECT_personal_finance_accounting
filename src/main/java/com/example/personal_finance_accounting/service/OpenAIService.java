@@ -29,35 +29,27 @@ public class OpenAIService {
     public String OpenAiServiceCall(String message) {
         String url = URL;
 
-        // Заголовки запроса
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + API_KEY);
         headers.set("Content-Type", "application/json");
-
-        // Тело запроса
         String requestBody = "{"
                 + "\"model\": \"" + MODEL_ID + "\", "
                 + "\"messages\": [{\"role\": \"user\", \"content\": \"" + message + "\"}], "
                 + "\"max_tokens\": 4000"
                 + "}";
 
-        // Создание HttpEntity, включающего заголовки и тело запроса
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 
         try {
-            // Отправка POST-запроса
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
             return parseResponse(response.getBody());
         } catch (HttpClientErrorException.TooManyRequests e) {
-            // Обработка ошибки "Too Many Requests"
             System.out.println("Too many requests: " + e.getMessage());
             return "You have exceeded your API quota. Please try again later.";
         } catch (HttpClientErrorException e) {
-            // Обработка других ошибок HTTP
             System.err.println("Http error: " + e.getMessage());
             return "An error occurred while calling the API.";
         } catch (Exception e) {
-            // Обработка других возможных ошибок
             System.err.println("Error: " + e.getMessage());
             return "An unexpected error occurred.";
         }

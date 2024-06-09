@@ -22,6 +22,6 @@ public class Expense {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = true) //nullable sets to true so corresponding user account can be deleted despite FK constraint
+    @JoinColumn(name = "userId",  nullable = true)
     private UserAccount userAccount;
 }

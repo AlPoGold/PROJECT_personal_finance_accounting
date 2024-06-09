@@ -41,7 +41,7 @@ public class UserAccount {
     private List<Balance> balances = new ArrayList<>();
 
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expense> expences = new ArrayList<>();
+    private List<Expense> expenses = new ArrayList<>();
 
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Income> incomes = new ArrayList<>();

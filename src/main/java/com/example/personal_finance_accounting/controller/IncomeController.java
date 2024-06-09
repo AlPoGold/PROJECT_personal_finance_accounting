@@ -31,8 +31,12 @@ public class IncomeController {
     private IncomeService incomeService;
     private UserAccountService userAccountService;
 
-
-
+    /**
+     * Отображает страницу с доходами.
+     *
+     * @param model Модель для передачи данных в шаблон.
+     * @return Имя представления для отображения страницы.
+     */
     @GetMapping
     public String getIncomes(Model model, Authentication authentication) {
 
@@ -55,6 +59,12 @@ public class IncomeController {
         return "incomes";
     }
 
+    /**
+     * Добавляет новый доход.
+     *
+     * @param income Новый доход.
+     * @return Перенаправление на страницу с доходами.
+     */
     @PostMapping
     public String addIncome(@RequestParam("amount") String amount,
                             @RequestParam("source") String source,
@@ -69,6 +79,12 @@ public class IncomeController {
         return "redirect:/incomes";
     }
 
+    /**
+     * Удаляет доход по идентификатору.
+     *
+     * @param id Идентификатор дохода.
+     * @return Перенаправление на страницу с доходами.
+     */
     @GetMapping("/delete/{id}")
     public String deleteIncome(@PathVariable("id") Long id) {
         incomeService.deleteById(id);
@@ -82,9 +98,15 @@ public class IncomeController {
     }
 
 
+    /**
+     * Обновляет существующий доход.
+     *
+     * @param id Идентификатор дохода.
+     * @param updatedIncome Обновленный доход.
+     * @return Перенаправление на страницу с доходами.
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateIncome(@PathVariable("id") Long id, @RequestBody Income updatedIncome, Authentication auth) {
-        // Проверяем, существует ли запись с указанным id
         UserAccount user = userAccountService.findByEmail(auth.getName());
         Optional<Income> existingIncomeOptional = incomeService.findById(id);
         if (existingIncomeOptional.isEmpty()) {
