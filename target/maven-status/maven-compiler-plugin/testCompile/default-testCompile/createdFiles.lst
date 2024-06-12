@@ -1,0 +1,3 @@
+com\example\personal_finance_accounting\integrationTests\UserRegistrationIntegrationTest.class
+com\example\personal_finance_accounting\unitTests\controllerTests\BalanceControllerTest.class
+com\example\personal_finance_accounting\unitTests\serviceTests\IncomeToGoalServiceTest.class

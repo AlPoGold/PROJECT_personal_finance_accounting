@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Goals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{static/css/bootstrap.min.css}"/>
+  <link th:href="@{static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="navigator">
+      <ul class="nav justify-content-center nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/charts}">Statistic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/goals}">Goals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/advices}">Advices</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="main">
+    <h1>Goals</h1>
+    <table th:if="${listGoals != null and !listGoals.isEmpty()}" class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Goal</th>
+        <th scope="col">Target amount</th>
+        <th scope="col">Current amount</th>
+        <th scope="col">Start date</th>
+        <th scope="col">End date</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  th:each="goal: ${listGoals}">
+        <td th:text="${goal.id}">Goal ID</td>
+        <td th:text="${goal.name}">Description</td>
+        <td th:text="${goal.targetAmount}">Target amount</td>
+        <td th:text="${goal.currentAmount}">Current amount</td>
+        <td th:text="${goal.startDate}">Start date</td>
+        <td th:text="${goal.endDate}">End date</td>
+        <td th:text="${goal.status}">Status</td>
+        <td>
+          <a class="btn btn-success"
+             th:data-id="${goal.id}"
+             th:data-target_amount="${goal.targetAmount}"
+             th:data-current_amount="${goal.currentAmount}"
+             th:data-start_date="${goal.startDate}"
+             th:data-end_date="${goal.endDate}"
+             th:data-status="${goal.status}"
+             onclick="openEditModal(this)"
+             title="Edit">Edit</a>&nbsp;
+          <a class="btn btn-danger" th:href="@{/goals/delete/{id}(id=${goal.id})}"
+             title="Delete">Delete</a>
+        </td>
+      </tbody>
+    </table>
+    <div th:if="${listGoals == null or listGoals.isEmpty()}">
+      <p>No goals available.</p>
+    </div>
+    <div class ="add_form">
+      <h2>Add your goal:</h2>
+      <div class="mb-3">
+        <form action="/goals" method="post">
+          <label class="form-label">Description of goal</label>
+          <input type="text" name="name"class="form-control"  placeholder="gift for myself" required>
+          <label class="form-label">Target amount</label>
+          <input type="text" name="targetAmount" class="form-control"  placeholder="1000" required>
+          <label class="form-label">Start date</label>
+          <input type="date" name ="startDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_start" placeholder="Выберите дату" required>
+          <label class="form-label">End date</label>
+          <input type="date" name="endDate"  pattern="yyyy-MM-dd" class="form-control" id="datepicker_end" placeholder="Выберите дату" required>
+          <label class="form-label">Status</label>
+          <select name="status" class="form-control" required>
+            <option value="NOT_STARTED">NOT_STARTED</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="PAUSED">PAUSED</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
+          <button type="submit">ADD GOAL</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="copyright">
+      <p>&copy; 2024 Колесникова Полина. Все права защищены. | Email: <a href="mailto:alraunepolina@yandex.ru">alraunepolina@yandex.ru</a></p>
+    </div>
+    <div class="danger-zone">
+      <h3>Danger Zone</h3>
+      <button class="btn btn-danger" onclick="deleteAllRecords()">Delete All Records</button>
+      <button class="btn btn-warning" onclick="logout()">LOGOUT</button>
+      <button class="btn btn-success" onclick="deleteUser()">DELETE USER</button>
+    </div>
+  </div>
+</div>
+<dialog id="editGoal">
+  <form id="editForm" method="post">
+    <input type="hidden" id="editId" name="id">
+    <label for="editName">Description of goal:</label>
+    <input type="text" id="editName" name="name" class="form-control" required>
+    <label for="editTargetAmount">Target amount:</label>
+    <input type="text" id="editTargetAmount" name="targetAmount" class="form-control" required>
+    <label for="editCurrentAmount">Current amount:</label>
+    <input type="text" id="editCurrentAmount" name="currentAmount" class="form-control" required>
+    <label for="editStartDate">Start date:</label>
+    <input type="date" id="editStartDate" name="startDate" class="form-control" required>
+    <label for="editEndDate">End date:</label>
+    <input type="date" id="editEndDate" name="endDate" class="form-control" required>
+    <label for="editStatus">Status:</label>
+    <select id="editStatus" name="status" class="form-control" required>
+      <option value="NOT_STARTED">NOT_STARTED</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="PAUSED">PAUSED</option>
+      <option value="COMPLETED">COMPLETED</option>
+    </select><br>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </form>
+  <button class="btn btn-secondary" id="closeDialogBtn" type="button" onclick="closeEditModal()">Close</button>
+</dialog>
+</body>
+<script th:inline="javascript">
+  var userId = [[${userId}]];
+function openEditModal(element) {
+    var id = element.getAttribute('data-id');
+    var name = element.getAttribute('data-name');
+    var targetAmount = element.getAttribute('data-target_amount');
+    var currentAmount = element.getAttribute('data-current_amount');
+    var startDate = element.getAttribute('data-start_date');
+    var endDate = element.getAttribute('data-end_date');
+    var status = element.getAttribute('data-status');
+
+    document.getElementById('editId').value = id;
+    document.getElementById('editName').value = name;
+    document.getElementById('editTargetAmount').value = targetAmount;
+    document.getElementById('editCurrentAmount').value = currentAmount;
+    document.getElementById('editStartDate').value = startDate;
+    document.getElementById('editEndDate').value = endDate;
+    document.getElementById('editStatus').value = status;
+
+    document.getElementById('editGoal').showModal();
+}
+function validateForm() {
+  var form = document.getElementById('addGoalForm');
+  var inputs = form.querySelectorAll('input[required], select[required]');
+  for (var i = 0; i < inputs.length; i++) {
+    if (!inputs[i].value) {
+      alert('Please fill out all required fields.');
+      return false;
+    }
+  }
+  return true;
+}
+
+function closeEditModal() {
+    document.getElementById('editGoal').close();
+}
+
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+    var goalId = document.getElementById('editId').value;
+
+    var updatedGoal = {
+        name: formData.get('name'),
+        targetAmount: formData.get('targetAmount'),
+        currentAmount: formData.get('currentAmount'),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate'),
+        status: formData.get('status')
+    };
+
+    fetch('/goals/update/' + goalId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedGoal)
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/goals';
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+function deleteAllRecords() {
+  if (confirm('Are you sure you want to delete all records from all tables? This action cannot be undone.')) {
+    fetch('index/deleteAll', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+            .then(response => {
+              if (response.ok) {
+                alert('All records have been successfully deleted.');
+                window.location.reload();
+              } else {
+                alert('An error occurred while deleting records.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while deleting records.');
+            });
+  }
+}
+function logout() {
+  fetch('/logout', { method: 'POST' })
+          .then(response => {
+            if (response.ok) {
+              window.location.href = '/login?logout';
+            } else {
+              console.error('Logout failed');
+            }
+          })
+          .catch(error => console.error('Error:', error));
+}
+function deleteUser() {
+  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    fetch('index/user/delete/' +userId, { method: 'DELETE' })
+            .then(response => {
+              if (response.ok) {
+                return logout();
+              } else {
+                alert('An error occurred while deleting the user.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while deleting the user.');
+            });
+  }
+}
+</script>
+</html>

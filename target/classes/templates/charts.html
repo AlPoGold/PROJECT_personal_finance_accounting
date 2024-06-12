@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <link th:href="@{static/css/style.css}" rel="stylesheet" />
+  <title>Charts</title>
+</head>
+<body>
+<div class="container">
+  <div class ="header">
+    <div class="navigator">
+      <ul class="nav justify-content-center nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/index}">Balance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/charts}">Statistic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/goals}">Goals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/advices}">Advices</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="main">
+    <h1>Statistic</h1>
+
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-incomes" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Incomes</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-expenses" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Expenses</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-balance" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Balance</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-incomes" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div id="carouselIncomes" class="carousel carousel-dark slide carousel-custom-size" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselIncomes" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselIncomes" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselIncomes" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselIncomes" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img th:src="@{/static/img/IncomeTime0.png}" alt="ChartWholeTime Income Image"  class="half_size_img d-block" >
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Whole time</h5>
+                <p>All your incomes for all time</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/IncomeTime1.png}" class="d-block half_size_img" alt="ChartLastMonth Income Image">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last month</h5>
+                <p>All your incomes for last month</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/IncomeTime3.png}" class="d-block half_size_img" alt="Chart3Months Income Image">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>3 last months</h5>
+                <p>All your incomes for 3 last months</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/IncomeTime12.png}" class="d-block half_size_img" alt="ChartLastYear Income Image">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last year</h5>
+                <p>All your incomes for last year</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselIncomes"  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselIncomes"  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-expenses" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <div id="carouselExpenses" class="carousel carousel-dark slide carousel-custom-size" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExpenses" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExpenses" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExpenses" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExpenses" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          </div>
+          <div class="carousel-inner ">
+            <div class="carousel-item active">
+              <img th:src="@{/static/img/ExpenseTime0.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Whole time</h5>
+                <p>All your expenses for whole time</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/ExpenseTime1.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last month</h5>
+                <p>All your expenses for last month</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/ExpenseTime3.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last 3 month</h5>
+                <p>All your expenses for last 3 month</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/ExpenseTime12.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last year</h5>
+                <p>All your expenses for last year</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExpenses"  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExpenses"  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-balance" role="tabpanel" aria-labelledby="pills-contact-tab">
+        <div id="carouselBalance" class="carousel carousel-dark slide carousel-custom-size" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselBalance" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselBalance" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselBalance" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselBalance" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img th:src="@{/static/img/Balance0.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Whole time</h5>
+                <p>Ratio of income and expenses for all time</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/Balance1.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last month</h5>
+                <p>ratio of income and expenses for last month</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/Balance3.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last 3 month</h5>
+                <p>Ratio of income and expenses for last 3 month</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img th:src="@{/static/img/Balance12.png}" class="d-block half_size_img" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Last year</h5>
+                <p>Ratio of income and expenses for last year</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselBalance"  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselBalance"  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="copyright">
+      <p>&copy; 2024 Колесникова Полина. Все права защищены. | Email: <a href="mailto:alraunepolina@yandex.ru">alraunepolina@yandex.ru</a></p>
+    </div>
+    <div class="danger-zone">
+      <h3>Danger Zone</h3>
+      <button class="btn btn-danger" onclick="deleteAllRecords()">Delete All Records</button>
+      <button class="btn btn-warning" onclick="logout()">LOGOUT</button>
+      <button class="btn btn-success" onclick="deleteUser()">DELETE USER</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  </body>
+<script th:inline="javascript">
+  var userId = [[${userId}]];
+  document.addEventListener('DOMContentLoaded', function() {
+    var triggerTabList = [].slice.call(document.querySelectorAll('#pills-tab button'));
+    triggerTabList.forEach(function (triggerEl) {
+      triggerEl.addEventListener('click', function (event) {
+        event.preventDefault();
+        var tabId = this.getAttribute('data-bs-target');
+        var tabContent = document.querySelector(tabId);
+
+        // Hide all tab panes
+        var allTabs = document.querySelectorAll('.tab-pane');
+        allTabs.forEach(function(tab) {
+          tab.classList.remove('show', 'active');
+        });
+
+        // Show the clicked tab pane
+        tabContent.classList.add('show', 'active');
+
+        // Update carousel for the active tab
+        var carouselId = tabContent.querySelector('.carousel').getAttribute('id');
+        var carouselInstance = bootstrap.Carousel.getOrCreateInstance(document.querySelector(`#${carouselId}`));
+        carouselInstance.cycle();
+      });
+    });
+  });
+
+
+  function deleteAllRecords() {
+    if (confirm('Are you sure you want to delete all records from all tables? This action cannot be undone.')) {
+      fetch('index/deleteAll', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+              .then(response => {
+                if (response.ok) {
+                  alert('All records have been successfully deleted.');
+                  window.location.reload();
+                } else {
+                  alert('An error occurred while deleting records.');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting records.');
+              });
+    }
+  }
+
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+            .then(response => {
+              if (response.ok) {
+                window.location.href = '/login?logout';
+              } else {
+                console.error('Logout failed');
+              }
+            })
+            .catch(error => console.error('Error:', error));
+  }
+  function deleteUser() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      fetch('index/user/delete/' +userId, { method: 'DELETE' })
+              .then(response => {
+                if (response.ok) {
+                  return logout();
+                } else {
+                  alert('An error occurred while deleting the user.');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the user.');
+              });
+    }
+  }
+</script>
+</html>

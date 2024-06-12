@@ -62,7 +62,7 @@ public class IncomeController {
     /**
      * Добавляет новый доход.
      *
-     * @param income Новый доход.
+     * @param amount, source, date поля нового дохода, который заполняет пользователь.
      * @return Перенаправление на страницу с доходами.
      */
     @PostMapping

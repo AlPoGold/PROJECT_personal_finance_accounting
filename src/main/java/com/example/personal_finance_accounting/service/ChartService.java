@@ -180,8 +180,14 @@ public class ChartService {
      */
     public void createImage(JFreeChart chart, int period){
         BufferedImage imageIncome = chart.createBufferedImage(800, 800);
-        File outputFileIncome = new File("src/main/resources/static/img/" + chart.getTitle().getText() + period + ".png");
+//        String filePathName = "./var/img/";
+        String filePathName = "src/main/resources/static/img/";
+        //
+        File outputFileIncome = new File( filePathName + chart.getTitle().getText() + period + ".png");
         try {
+            if(!outputFileIncome.exists()){
+                outputFileIncome.getParentFile().mkdirs();
+            }
             ImageIO.write(imageIncome, "png", outputFileIncome);
         } catch (IOException e) {
             throw new RuntimeException(e);

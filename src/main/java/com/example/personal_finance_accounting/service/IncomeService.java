@@ -39,7 +39,13 @@ public class IncomeService {
     public Income addIncome(String amount, String source, Date date, UserAccount userAccount) {
 
         Income newIncome = new Income();
-        newIncome.setAmount(BigDecimal.valueOf(Long.parseLong(amount)));
+        try{
+            Double amountDouble = Double.parseDouble(amount);
+            newIncome.setAmount(BigDecimal.valueOf(Double.parseDouble(amount)));
+        } catch (Exception e){
+            newIncome.setAmount(BigDecimal.ZERO);
+        }
+
         newIncome.setSource(source);
         if(date==null){
             date = convertToDate(LocalDate.now());

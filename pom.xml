@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>personal_finance_accounting</artifactId>
-	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>personal_finance_accounting</name>
 	<description>diploma project</description>
@@ -122,19 +121,9 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.3.1</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-					</archive>
 
-				</configuration>
-			</plugin>
 		</plugins>
+		<finalName>financetracker</finalName>
 	</build>
 
 </project>

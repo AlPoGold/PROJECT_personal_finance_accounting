@@ -41,7 +41,13 @@ public class ExpenseService {
             date = convertToDate(LocalDate.now());
         }
         Expense newExpense = new Expense();
-        newExpense.setAmount(BigDecimal.valueOf(Long.parseLong(amount)));
+        try{
+            Double amountDouble = Double.parseDouble(amount);
+            newExpense.setAmount(BigDecimal.valueOf(Double.parseDouble(amount)));
+        } catch (Exception e){
+            newExpense.setAmount(BigDecimal.ZERO);
+        }
+        newExpense.setAmount(BigDecimal.valueOf(Double.parseDouble(amount)));
         newExpense.setCategory(category);
         newExpense.setDate(date);
         newExpense.setUserAccount(userAccount);
