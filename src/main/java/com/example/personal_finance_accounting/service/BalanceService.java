@@ -143,6 +143,5 @@ public class BalanceService {
         expenseRepository.deleteAll();
         goalRepository.deleteAll();
         balanceRepository.deleteAll();
-
     }
 }
