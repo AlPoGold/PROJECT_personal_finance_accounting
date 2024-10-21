@@ -1,0 +1,7 @@
+2024-06-12|income was added!|+10000.00
+2024-06-12|income was added!|+45000
+2024-06-12|expense was added!|-8900
+2024-06-12|expense was added!|-400
+2024-06-12|expense was added!|-10000
+2024-06-12|adding new goal!|10000.0
+2024-06-12|adding new goal!|1000.0

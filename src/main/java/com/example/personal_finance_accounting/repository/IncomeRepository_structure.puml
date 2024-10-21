@@ -1,0 +1,339 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.personal_finance_accounting.repository.IncomeRepository",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1425356277 { 
+   	label=personal_finance_accounting
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   BalanceController1941979458[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BalanceController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   balanceService: BalanceService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userAccountService: UserAccountService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ deleteAllRecords(): ResponseEntity&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteUser(id: Long): ResponseEntity&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getBalance(model: Model, authentication: Authentication): String</TD></TR>
+<TR><TD ALIGN="LEFT" >- readLogFile(user: UserAccount): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ uploadProfilePhoto(file: MultipartFile, model: Model, authentication: Authentication): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+BalanceService1999190735[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BalanceService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   balanceRepository: BalanceRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   expenseRepository: ExpenseRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   goalRepository: GoalRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   incomeRepository: IncomeRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addBalance(userAccount: UserAccount)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateBalance(user: UserAccount): Balance</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateBalanceForLast3Months(user: UserAccount): Balance</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateBalanceForLastMonth(user: UserAccount): Balance</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateBalanceForLastYear(user: UserAccount): Balance</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteAllRecords()</TD></TR>
+<TR><TD ALIGN="LEFT" >- getDateMonthsAgo(months: int): Date</TD></TR>
+<TR><TD ALIGN="LEFT" >- getDateYearsAgo(years: int): Date</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUserBalance(userAccount: UserAccount): Balance</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initialBalance(userAccount: UserAccount): Balance</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateBalance(balance: Balance, user: UserAccount)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChartController1941979458[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChartController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   chartService: ChartService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userAccountService: UserAccountService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ showIncomeChart(model: Model, auth: Authentication): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChartService1999190735[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChartService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   balanceService: BalanceService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   expenseService: ExpenseService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   incomeService: IncomeService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userService: UserAccountService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createBalanceChart(period: int, user: UserAccount): JFreeChart</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createExpenseChart(userAccount: UserAccount, period: int): JFreeChart</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createExpenseChartHystogramm(period: int, user: UserAccount): JFreeChart</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createImage(chart: JFreeChart, period: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createIncomeChart(period: int, user: UserAccount): JFreeChart</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createIncomeChartHystogramm(period: int, user: UserAccount): JFreeChart</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GoalController1941979458[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GoalController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   goalService: GoalService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userAccountService: UserAccountService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addGoal(name: String, targetAmount: Double, startDate: LocalDate, endDate: LocalDate, status: GoalStatusEnum, auth: Authentication): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteGoal(id: Long): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getGoals(model: Model, authentication: Authentication): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ sendMoneyToGoal(id: Long, amount: Double): ResponseEntity&lt;Goal&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateGoal(id: Long, updatedGoal: Goal): ResponseEntity&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GoalService1999190735[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GoalService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   balanceService: BalanceService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   goalRepository: GoalRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addGoal(goal: Goal, userAccount: UserAccount)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addGoal(name: String, targetAmount: Double, startDate: LocalDate, endDate: LocalDate, status: GoalStatusEnum, userAccount: UserAccount): Goal</TD></TR>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- convertToDate(localDate: LocalDate): Date</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteGoal(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findById(id: Long): Optional&lt;Goal&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findByUserAccount(userAccount: UserAccount): List&lt;Goal&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getGoalById(id: Long): Optional&lt;Goal&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUserGoals(userAccount: UserAccount): List&lt;Goal&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ increaseMoneyGoalById(id: Long, amount: Double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initialRepo(userAccount: UserAccount)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateById(id: Long, updatedGoal: Goal)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+IncomeController1941979458[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)IncomeController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   goalService: GoalService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   incomeService: IncomeService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userAccountService: UserAccountService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addIncome(amount: String, source: String, date: Date, auth: Authentication): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteIncome(id: Long): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getIncomes(model: Model, authentication: Authentication): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateIncome(id: Long, model: Model): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateIncome(id: Long, updatedIncome: Income, auth: Authentication): ResponseEntity&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+IncomeRepository1039615760[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)IncomeRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ calculateTotalIncome(): BigDecimal</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateTotalIncomeByDateRange(startDate: Date, endDate: Date): BigDecimal</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateTotalIncomeByDateRangeUser(startDate: Date, endDate: Date, userAccount: UserAccount): BigDecimal</TD></TR>
+<TR><TD ALIGN="LEFT" >+ calculateTotalIncomeUser(userAccount: UserAccount): BigDecimal</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findAllIncomesByUserAccount(userAccount: UserAccount): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findIncomesByDateRange(startDate: Date, endDate: Date): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findIncomesByDateRangeUser(startDate: Date, endDate: Date, userAccount: UserAccount): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateById(id: Long, amount: BigDecimal, source: String, date: Date)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+IncomeService1999190735[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)IncomeService</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   incomeRepository: IncomeRepository [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addIncome(amount: String, source: String, date: Date, userAccount: UserAccount): Income</TD></TR>
+<TR><TD ALIGN="LEFT" >- convertToDate(localDate: LocalDate): Date</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteById(id: Long)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findById(id: Long): Optional&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAllIncomesForLast3Months(userAccount: UserAccount): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAllIncomesForLastMonth(userAccount: UserAccount): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAllIncomesForLastYear(userAccount: UserAccount): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUserIncomes(userAccount: UserAccount): List&lt;Income&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initialRepo(userAccount: UserAccount)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateById(id: Long, updatedIncome: Income, userAccount: UserAccount)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+UserRegisteredListener365187645[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)UserRegisteredListener</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   balanceService: BalanceService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   expenseService: ExpenseService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   goalService: GoalService [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   incomeService: IncomeService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onApplicationEvent(event: UserRegisteredEvent)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+BalanceController1941979458 -> BalanceService1999190735[label="balanceService
+[0..1]"];
+BalanceService1999190735 -> IncomeRepository1039615760[label="incomeRepository
+[0..1]"];
+ChartController1941979458 -> ChartService1999190735[label="chartService
+[0..1]"];
+ChartService1999190735 -> BalanceService1999190735[label="balanceService
+[0..1]"];
+ChartService1999190735 -> IncomeService1999190735[label="incomeService
+[0..1]"];
+GoalController1941979458 -> GoalService1999190735[label="goalService
+[0..1]"];
+GoalService1999190735 -> BalanceService1999190735[label="balanceService
+[0..1]"];
+IncomeController1941979458 -> GoalService1999190735[label="goalService
+[0..1]"];
+IncomeController1941979458 -> IncomeService1999190735[label="incomeService
+[0..1]"];
+IncomeService1999190735 -> IncomeRepository1039615760[label="incomeRepository
+[0..1]"];
+UserRegisteredListener365187645 -> BalanceService1999190735[label="balanceService
+[0..1]"];
+UserRegisteredListener365187645 -> GoalService1999190735[label="goalService
+[0..1]"];
+UserRegisteredListener365187645 -> IncomeService1999190735[label="incomeService
+[0..1]"];
+    
+}
+@enduml

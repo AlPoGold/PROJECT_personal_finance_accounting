@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: financetrackerapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9091:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/financetracker?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Polina8754!
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    networks:
+      - spring-network
+    restart: always
+
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: Polina8754!
+      MYSQL_DATABASE: financetracker
+      MYSQL_PASSWORD: Polina8754!
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", 'mysqladmin ping' ]
+      interval: 10s
+      timeout: 2s
+      retries: 10
+
+    networks:
+      - spring-network
+
+volumes:
+  dbdata:
+
+
+networks:
+  spring-network:
+    driver: bridge
