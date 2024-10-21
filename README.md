@@ -1,17 +1,22 @@
+Description:
+The personal financial accounting system is designed to manage users' personal finances, 
+including tracking income and expenses, planning a budget and achieving financial goals. 
+It provides users with the ability to analyze their financial transactions, 
+manage their budgets, and make informed financial decisions.
 
 
-Демонстрационный пользователь: 
+
+Demo user: 
 email: diplom@mail.com
 password: diplom
 
 
-Запуск приложения:
-1) из IDE: PersonalFinanceAccountingApplication.java, в браузере на localhost:8080
-2) из контейнера: запуск docker-compose.yml, в браузере на localhost:9091
+Launch the application:
+1) IDE: PersonalFinanceAccountingApplication.java, localhost:8080
+2) from Docker: docker-compose.yml, browser path: localhost:9091
 
 
-ATTENTION! Если нужно удалить все записи и все таблицы, необходимо выполнить в консоли 
-базы данных скрипт, написанный ниже!
+ATTENTION! For deleting all rows in each table you need use this script 
 
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -19,7 +24,7 @@ SET @tables = NULL;
 SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables
 FROM information_schema.tables
 WHERE table_schema = 'financetracker';
-SET @tables = IFNULL(@tables, 'dummy'); -- на случай если таблиц нет
+SET @tables = IFNULL(@tables, 'dummy');
 SET @sql = CONCAT('DROP TABLE IF EXISTS ', @tables);
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
