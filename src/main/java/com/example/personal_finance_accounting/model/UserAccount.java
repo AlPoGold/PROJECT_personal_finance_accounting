@@ -49,12 +49,4 @@ public class UserAccount {
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
 
-
-//    @Lob
-//    @Column(name = "logText", nullable = false, columnDefinition = "BLOB")
-//    private String logging;
-//
-//    @Lob
-//    @Column(name = "profilePic", nullable = false, columnDefinition = "BLOB")
-//    private byte[] pic ;
 }

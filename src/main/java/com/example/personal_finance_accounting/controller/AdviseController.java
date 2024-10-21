@@ -35,10 +35,10 @@ public class AdviseController {
 
 
     /**
-     * Получает совет от ИИ на основе пользовательского запроса.
+     * Get advise from AI
      *
-     * @param userMessage Сообщение от пользователя.
-     * @return Ответ от ИИ.
+     * @param userMessage Message from user
+     * @return Answer from AI
      */
     @PostMapping
     public String handleUserMessage(@RequestParam("userMessage") String userMessage, Model model) {

@@ -31,10 +31,10 @@ public class ExpenseController {
     private UserAccountService userAccountService;
 
     /**
-     * Отображает страницу с расходами.
+     * Show html-page with expenses
      *
-     * @param model Модель для передачи данных в шаблон.
-     * @return Имя представления для отображения страницы.
+     * @param model Model for thymeleaf template
+     * @return name of page
      */
     @GetMapping
     public String getExpenses(Model model, Authentication authentication) {
@@ -56,13 +56,13 @@ public class ExpenseController {
     }
 
     /**
-     * Добавляет новый расход.
+     * Adding new expense
      *
-     * @param amount сумма расхода.
-     * @param category категория расхода.
-     * @param date дата, когда произведена оплата.
-     * @param authentication сессия пользователя.
-     * @return Перенаправление на страницу с расходами.
+     * @param amount Expense's sum
+     * @param category Category of expense
+     * @param date Date of expense
+     * @param authentication User's session
+     * @return redirect to the html-page with expenses
      */
     @PostMapping
     public String addExpense(@RequestParam("amount") String amount,
@@ -80,10 +80,10 @@ public class ExpenseController {
 
 
     /**
-     * Удаляет расход по идентификатору.
+     * Delete expense by id
      *
-     * @param id Идентификатор расхода.
-     * @return Перенаправление на страницу с расходами.
+     * @param id Expense's id
+     * @return redirect to the html-page with expenses.
      */
     @GetMapping("/delete/{id}")
     public String deleteExpense(@PathVariable("id") Long id) {
@@ -99,11 +99,11 @@ public class ExpenseController {
 
 
     /**
-     * Обновляет существующий расход.
+     * Update existing expense
      *
-     * @param id Идентификатор расхода.
-     * @param updatedExpense Обновленный расход.
-     * @return Перенаправление на страницу с расходами.
+     * @param id Expense's id
+     * @param updatedExpense Updated expense
+     * @return redirect to the html-page with expenses.
      */
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateExpense(@PathVariable("id") Long id, @RequestBody Expense updatedExpense) {

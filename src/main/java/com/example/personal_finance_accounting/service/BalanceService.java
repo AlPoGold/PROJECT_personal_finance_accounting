@@ -24,9 +24,9 @@ public class BalanceService {
 
 
     /**
-     * Получает общий баланс пользователя.
-     * @param userAccount передаем аккаунт, с которого хотим посмотреть баланс
-     * @return Объект Balance, содержащий общий доход, общий расход и общий баланс.
+     * Get account's balance of current user
+     * @param userAccount user's account in existing session
+     * @return Object Balance with fields of needed values: expenses, incomes, saldo
      */
     public Balance getUserBalance(UserAccount userAccount) {
         Balance balance = balanceRepository.findByUserAccount(userAccount);

@@ -32,10 +32,10 @@ public class IncomeController {
     private UserAccountService userAccountService;
 
     /**
-     * Отображает страницу с доходами.
+     * Show html-page with incomes
      *
-     * @param model Модель для передачи данных в шаблон.
-     * @return Имя представления для отображения страницы.
+     * @param model Model for thymeleaf template
+     * @return Name of page
      */
     @GetMapping
     public String getIncomes(Model model, Authentication authentication) {
@@ -60,10 +60,10 @@ public class IncomeController {
     }
 
     /**
-     * Добавляет новый доход.
+     *Add new income
      *
-     * @param amount, source, date поля нового дохода, который заполняет пользователь.
-     * @return Перенаправление на страницу с доходами.
+     * @param amount, source, date  - values for new income, which fill by user
+     * @return redirect to incomes' page
      */
     @PostMapping
     public String addIncome(@RequestParam("amount") String amount,
@@ -80,10 +80,10 @@ public class IncomeController {
     }
 
     /**
-     * Удаляет доход по идентификатору.
+     * Delete income using id
      *
-     * @param id Идентификатор дохода.
-     * @return Перенаправление на страницу с доходами.
+     * @param id Income's id
+     * @return redirect to incomes' page
      */
     @GetMapping("/delete/{id}")
     public String deleteIncome(@PathVariable("id") Long id) {
@@ -99,11 +99,11 @@ public class IncomeController {
 
 
     /**
-     * Обновляет существующий доход.
-     *
-     * @param id Идентификатор дохода.
-     * @param updatedIncome Обновленный доход.
-     * @return Перенаправление на страницу с доходами.
+     * Update existing income
+     * *
+     * @param id Income's id
+     * @param updatedIncome Updated income from request body
+     * @return redirect to incomes' page
      */
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateIncome(@PathVariable("id") Long id, @RequestBody Income updatedIncome, Authentication auth) {

@@ -30,10 +30,10 @@ public class GoalController {
     private UserAccountService userAccountService;
 
     /**
-     * Отображает страницу с целями.
+     * Show html-page with goals
      *
-     * @param model Модель для передачи данных в шаблон.
-     * @return Имя представления для отображения страницы.
+     * @param model Model for thymeleaf template
+     * @return Name of page
      */
     @GetMapping("/goals")
     public String getGoals(Model model, Authentication authentication){
@@ -45,10 +45,15 @@ public class GoalController {
     }
 
     /**
-     * Добавляет новую цель.
+     * Adding new goal
      *
-     * @param goal Новая цель.
-     * @return Перенаправление на страницу с целями.
+     * @param name Description of goal
+     * @param targetAmount need money's amount for goal
+     * @param startDate when goal starts
+     * @param endDate when goal ends
+     * @param status status of goal
+     * @param auth user's session
+     * @return redirect to the html-page with goals
      */
     @PostMapping("/goals")
     public String addGoal(@RequestParam("name") String name,
@@ -66,7 +71,12 @@ public class GoalController {
         return "redirect:/goals";
     }
 
-
+    /** Redirect money from money's account to the goal by its id
+     *
+     * @param id Goal's id
+     * @param amount  money's amount for goal
+     * @return server's response
+     */
     @PutMapping("/goals/{id}")
     public ResponseEntity<Goal> sendMoneyToGoal(@PathVariable Long id, @RequestParam("amount") Double amount){
         log.log(Level.INFO, amount + " was sent to your goal!");
@@ -76,11 +86,11 @@ public class GoalController {
     }
 
     /**
-     * Обновляет существующую цель.
+     * Update existing goal
      *
-     * @param id Идентификатор цели.
-     * @param updatedGoal Обновленная цель.
-     * @return Перенаправление на страницу с целями.
+     * @param id Goal's id
+     * @param updatedGoal Updated goal with new values
+     * @return redirect to the html-page with goals
      */
     @PutMapping("/goals/update/{id}")
     public ResponseEntity<String> updateGoal(@PathVariable("id") Long id, @RequestBody Goal updatedGoal) {
@@ -93,10 +103,10 @@ public class GoalController {
     }
 
     /**
-     * Удаляет цель по идентификатору.
+     * Delete goal using id
      *
-     * @param id Идентификатор цели.
-     * @return Перенаправление на страницу с целями.
+     * @param id Goal's id
+     * @return redirect to the html-page with goals
      */
     @GetMapping("goals/delete/{id}")
     public String deleteGoal(@PathVariable Long id) {

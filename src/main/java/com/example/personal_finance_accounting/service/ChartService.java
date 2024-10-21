@@ -33,11 +33,11 @@ public class ChartService {
 
 
     /**
-     * Получает статистику расходов.
-     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
-     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     * Get statistic's expenses
+     * @param period integer number of statistic's period:
+     *               available values: 0(whole time), 1(for 1 month), 3(for 3 month), 12(for 1 year)
      *
-     * @return объект ChartData, представляющих данные о расходах в виде гистограммы.
+     * @return object ChartData
      */
     public JFreeChart createExpenseChartHystogramm(int period, UserAccount user) {
         List<Expense> expences = null;
@@ -81,11 +81,11 @@ public class ChartService {
     }
 
     /**
-     * Получает статистику доходов.
-     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
-     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     * Get statistic of incomes
+     * @param period integer number of statistic's period:
+     *               available values: 0(whole time), 1(for 1 month), 3(for 3 month), 12(for 1 year)
      *
-     * @return объект ChartData, представляющих данные о доходах в виде гистограммы.
+     * @return object ChartData in form of hystogramm
      */
     public JFreeChart createIncomeChartHystogramm(int period, UserAccount user){
         List<Income> incomes = null;
@@ -129,11 +129,11 @@ public class ChartService {
 
 
     /**
-     * Получает статистику по соотношению доходов и расходов.
-     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
-     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     * Get statistics for balance
+     * @param period integer number of statistic's period:
+     *               available values: 0(whole time), 1(for 1 month), 3(for 3 month), 12(for 1 year)
      *
-     * @return  объект ChartData, представляющий данные о соотношении в виде круговой диаграммы.
+     * @return  object ChartData in round histogram
      */
     public JFreeChart createBalanceChart(int period, UserAccount user){
         Balance balance = null;
@@ -171,12 +171,12 @@ public class ChartService {
 
 
     /**
-     * Получает изображение графика и сохраняет в папке src/main/resources/static/img/.
-     * @param chart объект ChartData,который генерируется за счет библиотеки JFreeChart
-     * @param period целое число, отображающее за сколько месяцев необходимо получить статистику,
-     *               доступные значения 0(за все время), 1(за 1 месяц), 3(за 3 месяца), 12(за год)
+     * Get chat's image and save in directory: src/main/resources/static/img/
+     * @param chart object ChartData,which was generated in  JFreeChart
+     * @param period integer number of statistic's period:
+     *               available values: 0(whole time), 1(for 1 month), 3(for 3 month), 12(for 1 year)
      *
-     * @return  запись изображения в папку.
+     * @return  saving process
      */
     public void createImage(JFreeChart chart, int period){
         BufferedImage imageIncome = chart.createBufferedImage(800, 800);

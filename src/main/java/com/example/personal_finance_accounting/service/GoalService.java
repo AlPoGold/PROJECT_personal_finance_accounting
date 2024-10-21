@@ -59,12 +59,9 @@ public class GoalService {
     }
 
     /**
-     * Увеличить в записи цель поле сurrentBalance,
-     * т.е те деньги, которые зарезервированы пд определеенную цель
-     *
-
-     * @param id идентификатор цели
-     * @param amount количесто денег которые резервируются под цель
+     * Adding money to the goal (booked money for goal using its id)
+     * @param id goal's id
+     * @param amount money's amount for reservation
      *
      */
     @Transactional

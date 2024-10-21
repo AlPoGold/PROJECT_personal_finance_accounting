@@ -32,10 +32,10 @@ public class BalanceController {
     private UserAccountService userAccountService;
 
     /**
-     * Отображает страницу баланса с данными о доходах, расходах и общем балансе пользователя.
+     * Show html-page with information about incomes, outcomes and balance of user.
      *
-     * @param model Модель для передачи данных в шаблон.
-     * @return Имя представления для отображения страницы.
+     * @param model Model for thymeleaf template
+     * @return Name of page
      */
     @GetMapping
     public String getBalance(Model model, Authentication authentication) {
@@ -56,11 +56,11 @@ public class BalanceController {
 
 
     /**
-     * Метод для загрузки изображения пользователя.
+     * Method for uploading profile photo
      *
-     * @param model Модель для передачи данных в шаблон.
-     * @param file загружаемый пользователем файл
-     * @return Имя представления для отображения страницы.
+     * @param model Model for thymeleaf template
+     * @param file user's file
+     * @return Name of page
      */
     @PostMapping("/uploadProfilePhoto")
     public String uploadProfilePhoto(@RequestParam("profilePhoto") MultipartFile file, Model model, Authentication authentication) {

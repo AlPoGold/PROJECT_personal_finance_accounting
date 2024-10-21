@@ -57,11 +57,11 @@ public class FileLogger {
     }
 
     /**
-     * Читает сообщения в файл, для JAR не подходит
+     * Read messages into text file, but not for JAR-file
      *
 
-     * @param user пользователь, с учетной записи которого прошла авторизация
-     * @return список записей в файле лога, доступного для этого пользователя
+     * @param user user with authentication
+     * @return return list of logs' notes
      */
 //    public static List<String> readLogs(UserAccount user){
 //        List<String> logEntries = new ArrayList<>();

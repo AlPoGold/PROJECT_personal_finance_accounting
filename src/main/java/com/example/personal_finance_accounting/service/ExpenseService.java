@@ -23,9 +23,9 @@ public class ExpenseService {
     private ExpenseRepository expenseRepository;
 
     /**
-     * получаем список всех расходов
+     * get list of all expenses
      *
-     * @param userAccount учетная запись пользователя, который прошел авторизации.
+     * @param userAccount user's account in existing session
      */
     public List<Expense> getUserExpenses(UserAccount userAccount) {
         return expenseRepository.findByUserAccount(userAccount);
@@ -56,11 +56,6 @@ public class ExpenseService {
 
     }
 
-    /**
-     * Удаляет расход по идентификатору.
-     *
-     * @param id Идентификатор расхода.
-     */
     public void deleteById(Long id) {
         expenseRepository.deleteById(id);
     }

@@ -21,10 +21,10 @@ public class ChartController {
     private final UserAccountService userAccountService;
 
     /**
-     * Отображает страницу с графиками доходов, расходов и баланса.
+     * Show html-page with images of financial charts
      *
-     * @param model Модель для передачи данных в шаблон.
-     * @return Имя представления для отображения страницы.
+     * @param model Model for thymeleaf template
+     * @return Name of page
      */
     @GetMapping("/charts")
     public String showIncomeChart(Model model, Authentication auth){
