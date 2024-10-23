@@ -4,6 +4,7 @@ import com.example.personal_finance_accounting.controller.BalanceController;
 import com.example.personal_finance_accounting.service.BalanceService;
 import com.example.personal_finance_accounting.service.UserAccountService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -30,6 +31,7 @@ public class BalanceControllerTest {
     }
 
     @Test
+    @DisplayName("Delete user account")
     public void testDeleteUser() {
         Long userId = 1L;
 
@@ -41,6 +43,7 @@ public class BalanceControllerTest {
     }
 
     @Test
+    @DisplayName("Delete all records from the application and database")
     public void testDeleteAllRecords() {
         ResponseEntity<String> responseEntity = balanceController.deleteAllRecords();
 

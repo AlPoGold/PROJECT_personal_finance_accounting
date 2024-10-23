@@ -4,6 +4,7 @@ import com.example.personal_finance_accounting.model.UserAccount;
 import com.example.personal_finance_accounting.repository.UserAccountRepository;
 import com.example.personal_finance_accounting.service.UserAccountService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +38,7 @@ public class UserRegistrationIntegrationTest {
         MockitoAnnotations.openMocks(this);
     }
     @Test
+    @DisplayName("Initial process with test data")
     public void testUserRegistrationCreatesInitialData() {
 
         UserAccount newUser = new UserAccount();

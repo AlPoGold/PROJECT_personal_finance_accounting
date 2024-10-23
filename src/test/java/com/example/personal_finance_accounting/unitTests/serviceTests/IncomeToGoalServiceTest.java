@@ -7,6 +7,7 @@ import com.example.personal_finance_accounting.repository.GoalRepository;
 import com.example.personal_finance_accounting.service.BalanceService;
 import com.example.personal_finance_accounting.service.GoalService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,6 +35,7 @@ public class IncomeToGoalServiceTest {
     }
 
     @Test
+    @DisplayName("Increase goal adding money")
     void testIncreaseMoneyGoalById() {
         UserAccount userAccount = new UserAccount();
         Goal goal = new Goal();
